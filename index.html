@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Campo Ambiental">
+<meta name="theme-color" content="#1a2e1a">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<title>Campo Ambiental · CDMB</title>
+<style>
+  :root {
+    --verde: #2d5a1b;
+    --verde-claro: #4a8c2a;
+    --verde-menta: #7bc67e;
+    --bg: #0f1a0f;
+    --bg2: #162016;
+    --bg3: #1e2d1e;
+    --text: #e8f0e8;
+    --text-dim: #8aaa8a;
+    --border: #2d4a2d;
+    --accent: #7bc67e;
+    --warn: #e8a550;
+    --danger: #e85050;
+    --mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', Menlo, Consolas, monospace;
+    --serif: Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; min-height: 100vh; }
+
+  .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; }
+  .header-logo { width: 36px; height: 36px; background: var(--verde); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .header-info { flex: 1; }
+  .header-title { font-family: var(--serif); font-size: 15px; color: var(--accent); }
+  .header-sub { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+  .offline-badge { background: var(--accent); color: #0a1a0a; font-size: 9px; padding: 2px 7px; border-radius: 20px; font-weight: 600; letter-spacing: 0.05em; flex-shrink: 0; }
+
+  .nav { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-tab { padding: 10px 16px; font-size: 10px; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.15s; flex-shrink: 0; }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .content { padding: 16px; max-width: 600px; margin: 0 auto; }
+  .section-header { font-family: var(--serif); font-size: 18px; color: var(--accent); margin-bottom: 4px; }
+  .section-sub { font-size: 10px; color: var(--text-dim); margin-bottom: 20px; letter-spacing: 0.04em; }
+
+  .field-group { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .field-group-title { font-size: 10px; color: var(--verde-menta); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .field { margin-bottom: 12px; }
+  .field:last-child { margin-bottom: 0; }
+
+  label { display: block; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
+  label .req { color: var(--danger); }
+  input, select, textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-family: var(--mono); font-size: 13px; padding: 9px 11px; outline: none; transition: border-color 0.15s; -webkit-appearance: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #1a2a1a; }
+  textarea { resize: vertical; min-height: 72px; }
+  select option { background: var(--bg3); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  .coord-box { background: var(--bg); border: 1px solid var(--verde); border-radius: 6px; padding: 10px; margin-bottom: 8px; }
+  .coord-label { font-size: 10px; color: var(--verde-menta); margin-bottom: 8px; letter-spacing: 0.08em; }
+  .gps-btn { width: 100%; padding: 10px; background: var(--verde); border: none; border-radius: 5px; color: var(--text); font-family: var(--mono); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+  .gps-btn:active { background: var(--verde-claro); }
+  .gps-status { font-size: 10px; color: var(--text-dim); text-align: center; margin-top: 6px; }
+  .gps-status.ok { color: var(--accent); }
+  .gps-status.err { color: var(--danger); }
+
+  .toggle-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .toggle-btn { padding: 6px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--text-dim); font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .toggle-btn.active { background: var(--verde); border-color: var(--verde-claro); color: var(--text); }
+
+  .btn { padding: 12px 20px; border-radius: 6px; font-family: var(--mono); font-size: 13px; cursor: pointer; border: none; transition: all 0.15s; font-weight: 600; }
+  .btn-primary { background: var(--verde-claro); color: #0a1a0a; }
+  .btn-primary:active { background: var(--accent); }
+  .btn-secondary { background: var(--bg3); border: 1px solid var(--border); color: var(--text); }
+  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+  .btn-full { width: 100%; }
+  .actions { display: flex; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+  .records-empty { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+  .records-empty .icon { font-size: 40px; margin-bottom: 12px; }
+  .record-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+  .record-card:active { border-color: var(--accent); }
+  .record-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .record-name { font-family: var(--serif); font-size: 15px; color: var(--accent); }
+  .record-date { font-size: 10px; color: var(--text-dim); }
+  .record-meta { font-size: 11px; color: var(--text-dim); line-height: 1.7; }
+  .record-meta strong { color: var(--text); }
+  .record-status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; letter-spacing: 0.06em; margin-top: 6px; }
+  .status-borrador { background: #2a2000; color: var(--warn); border: 1px solid var(--warn); }
+  .status-completo { background: #0a2010; color: var(--accent); border: 1px solid var(--accent); }
+  .record-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .record-del { background: transparent; border: 1px solid var(--danger); color: var(--danger); font-family: var(--mono); font-size: 11px; padding: 4px 12px; border-radius: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .record-del:active { background: var(--danger); color: #1a0000; }
+
+  .export-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+  .export-title { font-size: 11px; color: var(--verde-menta); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .export-desc { font-size: 11px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.6; }
+  .export-preview { background: var(--bg); padding: 12px; border-radius: 5px; font-size: 11px; line-height: 1.8; color: var(--text-dim); white-space: pre-wrap; max-height: 320px; overflow-y: auto; border: 1px solid var(--border); }
+
+  .notif { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg3); border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 999; transition: transform 0.3s; white-space: nowrap; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
+  .modal-overlay.show { display: flex; }
+  .modal-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; max-width: 360px; width: 100%; }
+  .modal-msg { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 20px; white-space: pre-line; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-btns .btn { flex: 1; }
+  .notif.show { transform: translateX(-50%) translateY(0); }
+  .info-note { background: #0a1a2a; border: 1px solid #1a3a5a; border-radius: 5px; padding: 8px 12px; font-size: 11px; color: #7aaad4; margin-bottom: 10px; line-height: 1.6; }
+
+  .dms-title { font-size: 10px; color: var(--verde-menta); letter-spacing: 0.06em; text-transform: uppercase; margin: 10px 0 6px; }
+  .dms-title:first-of-type { margin-top: 0; }
+  .gps-btn-sm { padding: 8px; font-size: 11px; margin-top: 10px; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">🌿</div>
+  <div class="header-info">
+    <div class="header-title">Campo Ambiental</div>
+    <div class="header-sub">Concesión Aguas · CDMB</div>
+  </div>
+  <div class="offline-badge">OFFLINE OK</div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" onclick="showPage('registros')" id="tab-registros">Registros</div>
+  <div class="nav-tab" onclick="showPage('form')" id="tab-form">Nueva visita</div>
+  <div class="nav-tab" onclick="showPage('exportar')" id="tab-exportar">Exportar</div>
+</div>
+
+<div id="notif" class="notif"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-msg" id="modalMsg"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
+      <button class="btn btn-danger" id="modalOk">Borrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======== REGISTROS ======== -->
+<div class="page active" id="page-registros">
+  <div class="content">
+    <p class="section-header">Visitas registradas</p>
+    <p class="section-sub">Guardadas en el dispositivo · funciona sin internet</p>
+    <div id="recordsList"></div>
+    <button class="btn btn-primary btn-full" onclick="showPage('form'); resetForm()">+ Nueva visita de campo</button>
+  </div>
+</div>
+
+<!-- ======== FORMULARIO ======== -->
+<div class="page" id="page-form">
+  <div class="content">
+    <p class="section-header">Datos de campo</p>
+    <p class="section-sub">Solo lo que se recolecta en la visita</p>
+
+    <!-- REFERENCIA (mínimo para identificar el registro) -->
+    <div class="field-group">
+      <div class="field-group-title">📌 Referencia del caso</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Referencia / nombre <span class="req">*</span></label>
+          <input type="text" id="f_ref" placeholder="Ej: Finca El Paraíso">
+        </div>
+        <div class="field">
+          <label>Fecha de visita</label>
+          <input type="date" id="f_fecha">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Número SINCA</label>
+          <input type="text" id="f_sinca" inputmode="numeric" placeholder="36703">
+        </div>
+        <div class="field">
+          <label>Teléfono de contacto</label>
+          <input type="tel" id="f_telefono" inputmode="tel" placeholder="300 123 4567">
+        </div>
+      </div>
+    </div>
+
+    <!-- USOS SOLICITADOS -->
+    <div class="field-group">
+      <div class="field-group-title">🚰 Usos solicitados</div>
+      <div class="toggle-group" id="usosGroup">
+        <div class="toggle-btn" data-uso="Doméstico con consumo humano" onclick="toggleUso(this)">Doméstico con consumo humano</div>
+        <div class="toggle-btn" data-uso="Doméstico sin consumo humano" onclick="toggleUso(this)">Doméstico sin consumo humano</div>
+        <div class="toggle-btn" data-uso="Abrevadero" onclick="toggleUso(this)">Abrevadero</div>
+        <div class="toggle-btn" data-uso="Riego" onclick="toggleUso(this)">Riego</div>
+        <div class="toggle-btn" data-uso="Piscicultura" onclick="toggleUso(this)">Piscicultura</div>
+        <div class="toggle-btn" data-uso="Industrial" onclick="toggleUso(this)">Industrial</div>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label>Cantidad y detalle de usos (escritura libre)</label>
+        <textarea id="f_usos_detalle" placeholder="Ej: 2 usos — doméstico con consumo humano para 1 vivienda (5 personas) y abrevadero para 8 bovinos..."></textarea>
+      </div>
+    </div>
+
+    <!-- COSTO DEL PROYECTO -->
+    <div class="field-group">
+      <div class="field-group-title">💲 Costo del proyecto</div>
+      <div class="field">
+        <label>Costo ($)</label>
+        <input type="text" id="f_costo" inputmode="numeric" placeholder="20'000.000">
+      </div>
+    </div>
+
+    <!-- CAUDAL AFORADO -->
+    <div class="field-group">
+      <div class="field-group-title">📊 Caudal aforado fuente</div>
+      <div class="field">
+        <label>Caudal aforado (l/s)</label>
+        <input type="number" id="f_caudal" step="0.001" placeholder="3.11">
+      </div>
+      <div class="field">
+        <label>Capacidad del balde (litros)</label>
+        <input type="number" id="f_balde_cap" step="0.01" inputmode="decimal" placeholder="10">
+      </div>
+      <div class="field">
+        <label>Medidas del balde (si no se conoce la capacidad)</label>
+        <input type="text" id="f_balde_medidas" placeholder="Ej: Diám. sup. 30 cm · diám. inf. 25 cm · alto 35 cm">
+      </div>
+      <div class="field">
+        <label>Nombre / tipo de fuente (opcional)</label>
+        <input type="text" id="f_fuente" placeholder="Ej: Caño Innominado Código 106">
+      </div>
+    </div>
+
+    <!-- COORDENADAS CAPTACIÓN -->
+    <div class="field-group">
+      <div class="field-group-title">📍 Coordenadas punto de captación</div>
+      <div class="info-note">Toca el botón GPS para capturar automáticamente desde el celular.</div>
+      <div class="coord-box">
+        <div class="coord-label">GEOGRÁFICAS (GPS del celular)</div>
+        <div class="field-row">
+          <div class="field">
+            <label>Latitud</label>
+            <input type="text" id="f_lat" placeholder='7° 0&apos;6.7" N'>
+          </div>
+          <div class="field">
+            <label>Longitud</label>
+            <input type="text" id="f_lon" placeholder='73° 1&apos;42.90" W'>
+          </div>
+        </div>
+        <button class="gps-btn" onclick="captureGPS()">📡 Capturar GPS ahora</button>
+        <div class="gps-status" id="gpsStatus">Toca para obtener ubicación</div>
+      </div>
+      <div class="coord-box">
+        <div class="coord-label">PLANAS — Magna-Sirgas (opcional)</div>
+        <div class="field-row-3">
+          <div class="field"><label>Norte</label><input type="text" id="f_norte" placeholder="1.266.151"></div>
+          <div class="field"><label>Este</label><input type="text" id="f_este" placeholder="1.115.907"></div>
+          <div class="field"><label>Cota</label><input type="number" id="f_cota" placeholder="1568"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁREAS -->
+    <div class="field-group">
+      <div class="field-group-title">🌳 Áreas del predio</div>
+      <div class="field">
+        <label>Extensión total del terreno (ha)</label>
+        <input type="number" id="f_extension" step="0.0001" placeholder="1.3272">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Área en cultivo (ha)</label>
+          <input type="number" id="f_area_cultivo" step="0.0001" placeholder="0.7475">
+        </div>
+        <div class="field">
+          <label>Área en bosque (ha)</label>
+          <input type="number" id="f_area_bosque" step="0.0001" placeholder="0.5797">
+        </div>
+      </div>
+    </div>
+
+    <!-- SUELO, PENDIENTE Y VEGETACIÓN -->
+    <div class="field-group">
+      <div class="field-group-title">⛰️ Suelo, pendiente y vegetación</div>
+      <div class="field">
+        <label>Tipo de suelo</label>
+        <input type="text" id="f_tipo_suelo" placeholder="Ej: Franco arcilloso">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Pendiente 1 (%)</label>
+          <input type="number" id="f_pendiente1" step="0.1" inputmode="decimal" placeholder="25">
+        </div>
+        <div class="field">
+          <label>Pendiente 2 (%)</label>
+          <input type="number" id="f_pendiente2" step="0.1" inputmode="decimal" placeholder="40">
+        </div>
+      </div>
+      <div class="field">
+        <label>Vegetación</label>
+        <textarea id="f_vegetacion" placeholder="Ej: Rastrojo alto, guadua y árboles nativos en la ronda hídrica..."></textarea>
+      </div>
+    </div>
+
+    <!-- VIVIENDAS -->
+    <div class="field-group">
+      <div class="field-group-title">🏡 Número de viviendas y diseño</div>
+      <div class="info-note">Escoge el número de viviendas y la app pedirá las coordenadas elipsoidales de cada una.</div>
+      <div class="field">
+        <label>Número de viviendas</label>
+        <select id="f_num_viviendas" onchange="onCountChange('viv', this.value)">
+          <option value="">-- Seleccionar --</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div id="vivBlocks"></div>
+      <div class="field">
+        <label>Descripción y diseño de las viviendas</label>
+        <textarea id="f_vivienda_desc" placeholder="Ej: Una vivienda de 2 pisos, 3 habitaciones, cocina, corredor, lavadero y 2 baños con ducha. Red PVC independiente para aguas residuales y grises..."></textarea>
+      </div>
+    </div>
+
+    <!-- SISTEMA SÉPTICO -->
+    <div class="field-group">
+      <div class="field-group-title">🔄 Sistema séptico y su diseño</div>
+      <div class="field">
+        <label>Tipo de sistema</label>
+        <select id="f_septico_tipo" onchange="onSepticoTipoChange()">
+          <option value="">-- Seleccionar --</option>
+          <option value="Pozo séptico plástico con lecho filtrante">Pozo séptico plástico + lecho filtrante</option>
+          <option value="Pozo séptico concreto con campo de infiltración">Pozo séptico concreto + infiltración</option>
+          <option value="Pozo séptico de absorción">Pozo séptico de absorción</option>
+          <option value="Trampa de grasas + pozo séptico">Trampa de grasas + pozo séptico</option>
+          <option value="Biodigestor">Biodigestor</option>
+          <option value="Letrina">Letrina</option>
+          <option value="Sin sistema">Sin sistema</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="field" id="septicoOtroWrap" style="display:none">
+        <label>¿Cuál es el sistema séptico?</label>
+        <input type="text" id="f_septico_otro" placeholder="Ej: Humedal artificial de flujo subsuperficial">
+      </div>
+      <div class="field">
+        <label>¿Cuántos sistemas sépticos hay?</label>
+        <select id="f_num_septicos">
+          <option value="">-- Seleccionar --</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Descripción del diseño</label>
+        <textarea id="f_septico_desc" placeholder="Ej: Pozo séptico de plástico enterrado, un único tanque con lecho filtrante integrado. Salida descarga hacia plantación de bambú..."></textarea>
+      </div>
+    </div>
+
+    <!-- CAPTACIÓN Y CONDUCCIÓN -->
+    <div class="field-group">
+      <div class="field-group-title">🏗️ Captación, conducción y recepción</div>
+      <div class="field">
+        <label>Obra de captación</label>
+        <textarea id="f_captacion" placeholder="Ej: Muro de presa en cemento 1.80 × 0.50 × 0.31 m. Manguera 2&quot; de 27 m hasta sedimentador (~600 l)..."></textarea>
+      </div>
+      <div class="field">
+        <label>Sistema de conducción</label>
+        <textarea id="f_conduccion" placeholder="Ej: Manguera 2&quot; de 322 m hasta tanque comunitario 1.911 l, luego ½&quot; de 365 m a segundo tanque..."></textarea>
+      </div>
+      <div class="field">
+        <label>Sitio(s) de recepción (descripción)</label>
+        <textarea id="f_recepcion" placeholder="Recepción 1: Tanque comunitario cemento ~1.911 l · Cota 1524&#10;Recepción 2: ...&#10;Almacenamiento final: Tanque ~42.000 l · Cota 1326..."></textarea>
+      </div>
+    </div>
+
+    <!-- COORDENADAS DE TANQUES -->
+    <div class="field-group">
+      <div class="field-group-title">📍 Coordenadas de tanques (elipsoidales)</div>
+      <div class="info-note">Escoge cuántos tanques hay y la app pedirá las coordenadas de cada uno en grados, minutos y segundos. Párate junto al tanque y usa el botón GPS para capturarlas automáticamente.</div>
+      <div class="field">
+        <label>¿Cuántos tanques de recepción hay?</label>
+        <select id="f_num_tq_recepcion" onchange="onCountChange('tqr', this.value)">
+          <option value="">-- Seleccionar --</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div id="tqrBlocks"></div>
+      <div class="field" style="margin-top:12px">
+        <label>¿Cuántos tanques sedimentadores hay?</label>
+        <select id="f_num_tq_sedimentador" onchange="onCountChange('tqs', this.value)">
+          <option value="">-- Seleccionar --</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div id="tqsBlocks"></div>
+    </div>
+
+    <!-- SERVIDUMBRE -->
+    <div class="field-group">
+      <div class="field-group-title">📜 Servidumbre</div>
+      <div class="field">
+        <label>¿Requiere servidumbre?</label>
+        <div class="toggle-group" id="servGroup">
+          <div class="toggle-btn" data-val="No requiere" onclick="toggleSingle(this,'servGroup')">No requiere</div>
+          <div class="toggle-btn" data-val="Sí — verbal" onclick="toggleSingle(this,'servGroup')">Sí — verbal</div>
+          <div class="toggle-btn" data-val="Sí — constituida formalmente" onclick="toggleSingle(this,'servGroup')">Sí — constituida</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observación</label>
+        <input type="text" id="f_serv_obs" placeholder="Ej: Servidumbre verbal con el vecino para paso por predio colindante">
+      </div>
+    </div>
+
+    <!-- DERIVACIONES -->
+    <div class="field-group">
+      <div class="field-group-title">🔀 Derivaciones para otros usos</div>
+      <div class="field">
+        <label>¿Existen derivaciones que puedan resultar afectadas?</label>
+        <div class="toggle-group" id="derivGroup">
+          <div class="toggle-btn" data-val="No existen derivaciones" onclick="toggleSingle(this,'derivGroup')">No existen</div>
+          <div class="toggle-btn" data-val="Sí existen — sin afectación" onclick="toggleSingle(this,'derivGroup')">Sí — sin afectación</div>
+          <div class="toggle-btn" data-val="Sí existen — con posible afectación" onclick="toggleSingle(this,'derivGroup')">Sí — con afectación</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Detalle (expediente, usuario, cota)</label>
+        <textarea id="f_deriv_desc" placeholder="Ej: Derivación asociada a concesión CA-0089-2022 en el punto de captación. Los usos otorgados no se verán afectados..."></textarea>
+      </div>
+    </div>
+
+    <!-- RESTITUCIÓN -->
+    <div class="field-group">
+      <div class="field-group-title">💧 Restitución de sobrantes</div>
+      <div class="field">
+        <label>Lugar de restitución</label>
+        <div class="toggle-group" id="restGroup">
+          <div class="toggle-btn" data-val="Punto de captación (rebose)" onclick="toggleSingle(this,'restGroup')">Captación (rebose)</div>
+          <div class="toggle-btn" data-val="Sedimentador (rebose)" onclick="toggleSingle(this,'restGroup')">Sedimentador</div>
+          <div class="toggle-btn" data-val="Punto de distribución" onclick="toggleSingle(this,'restGroup')">Distribución</div>
+          <div class="toggle-btn" data-val="No es posible la restitución" onclick="toggleSingle(this,'restGroup')">No es posible</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Forma y observaciones</label>
+        <input type="text" id="f_rest_obs" placeholder="Ej: Restitución por rebose en captación y sedimentador">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="saveRecord('borrador')">Guardar borrador</button>
+      <button class="btn btn-primary" onclick="saveRecord('completo')" style="flex:1">✓ Guardar</button>
+    </div>
+    <div style="margin-top:10px">
+      <button class="btn btn-danger btn-full" onclick="resetForm()">Limpiar formulario</button>
+    </div>
+    <div style="margin-top:10px; display:none" id="deleteCurrentWrap">
+      <button class="btn btn-danger btn-full" onclick="deleteCurrent()">🗑 Borrar este registro</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======== EXPORTAR ======== -->
+<div class="page" id="page-exportar">
+  <div class="content">
+    <p class="section-header">Exportar</p>
+    <p class="section-sub">Texto listo para pegar en el Concepto Técnico</p>
+
+    <div class="export-section">
+      <div class="export-title">Seleccionar visita</div>
+      <select id="exportSelect" onchange="previewExport()" style="margin-bottom:12px">
+        <option value="">-- Seleccionar --</option>
+      </select>
+      <div class="export-title">Vista previa</div>
+      <div class="export-preview" id="exportPreview">Selecciona un registro para previsualizar...</div>
+      <button class="btn btn-primary btn-full" style="margin-top:10px" onclick="copyExport()">📋 Copiar texto</button>
+    </div>
+
+    <div class="export-section">
+      <div class="export-title">💾 Respaldo JSON</div>
+      <div class="export-desc">Descarga todos los registros para guardar o pasar al PC.</div>
+      <button class="btn btn-secondary btn-full" onclick="exportJSON()">⬇ Descargar todos los registros</button>
+    </div>
+
+    <div class="export-section">
+      <div class="export-title">📥 Importar respaldo JSON</div>
+      <div class="export-desc">Carga un respaldo descargado en otro teléfono. Los registros se combinan con los de este dispositivo (gana el más reciente).</div>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importJSONFile(this.files[0])">
+      <button class="btn btn-secondary btn-full" onclick="document.getElementById('importFile').click()">⬆ Cargar respaldo JSON</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'campo_ambiental_v3';
+let usosSelected = [];
+let servidumbre = '', derivacion = '', restitucion = '';
+let currentId = null;
+
+function getRecords() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; } }
+function saveRecords(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'registros') renderRecords();
+  if (name === 'exportar') renderExportPicker();
+}
+
+function captureGPS() {
+  const st = document.getElementById('gpsStatus');
+  st.textContent = 'Obteniendo ubicación...'; st.className = 'gps-status';
+  if (!navigator.geolocation) { st.textContent = 'GPS no disponible.'; st.className = 'gps-status err'; return; }
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude: lat, longitude: lon, altitude: alt, accuracy: acc } = pos.coords;
+    const toDMS = (deg, isLat) => {
+      const d = Math.abs(deg), D = Math.floor(d), m = Math.floor((d - D) * 60);
+      const s = (((d - D) * 60 - m) * 60).toFixed(2);
+      const dir = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
+      return `${D}°${m}'${s}" ${dir}`;
+    };
+    document.getElementById('f_lat').value = toDMS(lat, true);
+    document.getElementById('f_lon').value = toDMS(lon, false);
+    if (alt) document.getElementById('f_cota').value = Math.round(alt);
+    st.textContent = `✓ ±${Math.round(acc)}m · ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+    st.className = 'gps-status ok';
+  }, err => {
+    st.textContent = err.code === 1 ? 'Permiso denegado' : 'No se pudo obtener ubicación';
+    st.className = 'gps-status err';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
+// ===== Bloques dinámicos de coordenadas elipsoidales (G/M/S) =====
+const DMS_GROUPS = {
+  tqr: { container: 'tqrBlocks', label: 'Tanque de recepción' },
+  tqs: { container: 'tqsBlocks', label: 'Tanque sedimentador' },
+  viv: { container: 'vivBlocks', label: 'Vivienda' },
+};
+const DMS_MAX = 10;
+
+function renderDMSBlocks(prefix, count) {
+  const grp = DMS_GROUPS[prefix];
+  const cont = document.getElementById(grp.container);
+  let html = '';
+  for (let i = 1; i <= count; i++) {
+    html += `
+    <div class="coord-box">
+      <div class="coord-label">${grp.label.toUpperCase()} ${i}</div>
+      <div class="dms-title">Latitud (N)</div>
+      <div class="field-row-3">
+        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lat_g" min="0" max="90" step="1" inputmode="numeric" placeholder="7"></div>
+        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lat_m" min="0" max="59" step="1" inputmode="numeric" placeholder="0"></div>
+        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lat_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="6.70"></div>
+      </div>
+      <div class="dms-title">Longitud (W)</div>
+      <div class="field-row-3">
+        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lon_g" min="0" max="180" step="1" inputmode="numeric" placeholder="73"></div>
+        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lon_m" min="0" max="59" step="1" inputmode="numeric" placeholder="1"></div>
+        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lon_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="42.90"></div>
+      </div>
+      <button class="gps-btn gps-btn-sm" onclick="captureGPSDMS('${prefix}', ${i})">📡 Capturar GPS aquí</button>
+      <div class="gps-status" id="${prefix}_${i}_status"></div>
+    </div>`;
+  }
+  cont.innerHTML = html;
+}
+
+function readDMSBlocks(prefix) {
+  const out = [];
+  const v = id => document.getElementById(id)?.value?.trim() || '';
+  for (let i = 1; i <= DMS_MAX; i++) {
+    if (!document.getElementById(`${prefix}_${i}_lat_g`)) break;
+    out.push({
+      lat_g: v(`${prefix}_${i}_lat_g`), lat_m: v(`${prefix}_${i}_lat_m`), lat_s: v(`${prefix}_${i}_lat_s`),
+      lon_g: v(`${prefix}_${i}_lon_g`), lon_m: v(`${prefix}_${i}_lon_m`), lon_s: v(`${prefix}_${i}_lon_s`),
+    });
+  }
+  return out;
+}
+
+function fillDMSBlocks(prefix, arr) {
+  (arr || []).forEach((c, idx) => {
+    const i = idx + 1;
+    const s = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    s(`${prefix}_${i}_lat_g`, c.lat_g); s(`${prefix}_${i}_lat_m`, c.lat_m); s(`${prefix}_${i}_lat_s`, c.lat_s);
+    s(`${prefix}_${i}_lon_g`, c.lon_g); s(`${prefix}_${i}_lon_m`, c.lon_m); s(`${prefix}_${i}_lon_s`, c.lon_s);
+  });
+}
+
+// Al cambiar la cantidad se re-dibujan los bloques conservando lo ya escrito
+function onCountChange(prefix, val) {
+  const prev = readDMSBlocks(prefix);
+  renderDMSBlocks(prefix, parseInt(val || '0', 10) || 0);
+  fillDMSBlocks(prefix, prev);
+}
+
+function captureGPSDMS(prefix, i) {
+  const st = document.getElementById(`${prefix}_${i}_status`);
+  st.textContent = 'Obteniendo ubicación...'; st.className = 'gps-status';
+  if (!navigator.geolocation) { st.textContent = 'GPS no disponible.'; st.className = 'gps-status err'; return; }
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude: lat, longitude: lon, accuracy: acc } = pos.coords;
+    const dec = deg => {
+      const d = Math.abs(deg), D = Math.floor(d), m = Math.floor((d - D) * 60);
+      const s = (((d - D) * 60 - m) * 60).toFixed(2);
+      return [D, m, s];
+    };
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    const [lg, lm, ls] = dec(lat);
+    const [og, om, os] = dec(lon);
+    set(`${prefix}_${i}_lat_g`, lg); set(`${prefix}_${i}_lat_m`, lm); set(`${prefix}_${i}_lat_s`, ls);
+    set(`${prefix}_${i}_lon_g`, og); set(`${prefix}_${i}_lon_m`, om); set(`${prefix}_${i}_lon_s`, os);
+    st.textContent = `✓ ±${Math.round(acc)}m capturado`;
+    st.className = 'gps-status ok';
+  }, err => {
+    st.textContent = err.code === 1 ? 'Permiso denegado' : 'No se pudo obtener ubicación';
+    st.className = 'gps-status err';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
+function onSepticoTipoChange() {
+  const esOtro = document.getElementById('f_septico_tipo').value === 'Otro';
+  document.getElementById('septicoOtroWrap').style.display = esOtro ? 'block' : 'none';
+  if (!esOtro) document.getElementById('f_septico_otro').value = '';
+}
+
+function toggleUso(el) {
+  el.classList.toggle('active');
+  const u = el.dataset.uso;
+  usosSelected = el.classList.contains('active') ? [...new Set([...usosSelected, u])] : usosSelected.filter(x => x !== u);
+}
+function toggleSingle(el, gid) {
+  document.querySelectorAll('#' + gid + ' .toggle-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  if (gid === 'servGroup') servidumbre = el.dataset.val;
+  if (gid === 'derivGroup') derivacion = el.dataset.val;
+  if (gid === 'restGroup') restitucion = el.dataset.val;
+}
+
+function collectForm() {
+  const g = id => document.getElementById(id)?.value?.trim() || '';
+  return {
+    id: currentId || Date.now().toString(),
+    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+    ref: g('f_ref'), fecha: g('f_fecha'), sinca: g('f_sinca'), telefono: g('f_telefono'),
+    usos: [...usosSelected], usos_detalle: g('f_usos_detalle'), costo: g('f_costo'),
+    caudal: g('f_caudal'), balde_cap: g('f_balde_cap'), balde_medidas: g('f_balde_medidas'), fuente: g('f_fuente'),
+    lat: g('f_lat'), lon: g('f_lon'), norte: g('f_norte'), este: g('f_este'), cota: g('f_cota'),
+    extension: g('f_extension'), area_cultivo: g('f_area_cultivo'), area_bosque: g('f_area_bosque'),
+    tipo_suelo: g('f_tipo_suelo'), pendiente1: g('f_pendiente1'), pendiente2: g('f_pendiente2'), vegetacion: g('f_vegetacion'),
+    num_viviendas: g('f_num_viviendas'), viviendas_coords: readDMSBlocks('viv'), vivienda_desc: g('f_vivienda_desc'),
+    septico_tipo: g('f_septico_tipo'), septico_otro: g('f_septico_otro'), septico_desc: g('f_septico_desc'),
+    num_septicos: g('f_num_septicos'),
+    captacion: g('f_captacion'), conduccion: g('f_conduccion'), recepcion: g('f_recepcion'),
+    num_tq_recepcion: g('f_num_tq_recepcion'), tq_recepcion: readDMSBlocks('tqr'),
+    num_tq_sedimentador: g('f_num_tq_sedimentador'), tq_sedimentador: readDMSBlocks('tqs'),
+    servidumbre, serv_obs: g('f_serv_obs'),
+    derivacion, deriv_desc: g('f_deriv_desc'),
+    restitucion, rest_obs: g('f_rest_obs'),
+  };
+}
+
+function saveRecord(status) {
+  const d = collectForm();
+  if (!d.ref) { showNotif('⚠ Ingresa una referencia para el registro'); return; }
+  d.status = status; d.updatedAt = new Date().toISOString();
+  let recs = getRecords();
+  const i = recs.findIndex(r => r.id === d.id);
+  if (i >= 0) recs[i] = d; else recs.push(d);
+  saveRecords(recs);
+  showNotif(status === 'completo' ? '✓ Registro guardado' : '✓ Borrador guardado');
+  showPage('registros');
+}
+
+function loadRecord(id) {
+  const r = getRecords().find(x => x.id === id);
+  if (!r) return;
+  currentId = r.id;
+  const s = (f, v) => { const el = document.getElementById(f); if (el) el.value = v || ''; };
+  s('f_ref', r.ref); s('f_fecha', r.fecha); s('f_sinca', r.sinca); s('f_telefono', r.telefono); s('f_costo', r.costo);
+  s('f_usos_detalle', r.usos_detalle);
+  s('f_caudal', r.caudal); s('f_balde_cap', r.balde_cap); s('f_balde_medidas', r.balde_medidas); s('f_fuente', r.fuente);
+  s('f_lat', r.lat); s('f_lon', r.lon); s('f_norte', r.norte); s('f_este', r.este); s('f_cota', r.cota);
+  s('f_extension', r.extension); s('f_area_cultivo', r.area_cultivo); s('f_area_bosque', r.area_bosque);
+  s('f_tipo_suelo', r.tipo_suelo); s('f_pendiente1', r.pendiente1); s('f_pendiente2', r.pendiente2); s('f_vegetacion', r.vegetacion);
+  s('f_num_viviendas', r.num_viviendas); s('f_vivienda_desc', r.vivienda_desc);
+  s('f_septico_tipo', r.septico_tipo); s('f_septico_otro', r.septico_otro); s('f_septico_desc', r.septico_desc);
+  onSepticoTipoChange(); if (r.septico_tipo === 'Otro') s('f_septico_otro', r.septico_otro);
+  s('f_captacion', r.captacion); s('f_conduccion', r.conduccion); s('f_recepcion', r.recepcion);
+  s('f_serv_obs', r.serv_obs); s('f_deriv_desc', r.deriv_desc); s('f_rest_obs', r.rest_obs);
+  // Bloques dinámicos de coordenadas
+  s('f_num_septicos', r.num_septicos);
+  renderDMSBlocks('viv', parseInt(r.num_viviendas || '0', 10) || 0); fillDMSBlocks('viv', r.viviendas_coords);
+  s('f_num_tq_recepcion', r.num_tq_recepcion);
+  renderDMSBlocks('tqr', parseInt(r.num_tq_recepcion || '0', 10) || 0); fillDMSBlocks('tqr', r.tq_recepcion);
+  s('f_num_tq_sedimentador', r.num_tq_sedimentador);
+  renderDMSBlocks('tqs', parseInt(r.num_tq_sedimentador || '0', 10) || 0); fillDMSBlocks('tqs', r.tq_sedimentador);
+  usosSelected = [...(r.usos || [])];
+  document.querySelectorAll('#usosGroup .toggle-btn').forEach(b => b.classList.toggle('active', usosSelected.includes(b.dataset.uso)));
+  servidumbre = r.servidumbre || ''; derivacion = r.derivacion || ''; restitucion = r.restitucion || '';
+  [['servGroup', servidumbre], ['derivGroup', derivacion], ['restGroup', restitucion]].forEach(([gid, val]) => {
+    document.querySelectorAll('#' + gid + ' .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
+  });
+  showPage('form');
+  document.getElementById('deleteCurrentWrap').style.display = 'block';
+}
+
+function deleteCurrent() {
+  if (!currentId) return;
+  const r = getRecords().find(x => x.id === currentId);
+  const ref = r ? (r.ref || 'este registro') : 'este registro';
+  customConfirm('¿Borrar "' + ref + '"?\n\nEsta acción no se puede deshacer.', 'Borrar', () => {
+    saveRecords(getRecords().filter(x => x.id !== currentId));
+    currentId = null;
+    showNotif('🗑 Registro borrado');
+    showPage('registros');
+  });
+}
+
+function resetForm() {
+  const doReset = () => {
+    currentId = null;
+    document.querySelectorAll('#page-form input, #page-form select, #page-form textarea').forEach(el => el.value = '');
+    usosSelected = []; servidumbre = ''; derivacion = ''; restitucion = '';
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    ['tqrBlocks', 'tqsBlocks', 'vivBlocks'].forEach(id => document.getElementById(id).innerHTML = '');
+    document.getElementById('septicoOtroWrap').style.display = 'none';
+    document.getElementById('gpsStatus').textContent = 'Toca para obtener ubicación';
+    document.getElementById('gpsStatus').className = 'gps-status';
+    document.getElementById('f_fecha').value = new Date().toISOString().split('T')[0];
+    document.getElementById('deleteCurrentWrap').style.display = 'none';
+  };
+  if (currentId) {
+    customConfirm('¿Crear formulario nuevo?\n\nLos cambios no guardados se perderán.', 'Continuar', doReset);
+  } else {
+    doReset();
+  }
+}
+
+function renderRecords() {
+  const list = document.getElementById('recordsList');
+  const recs = getRecords().sort((a, b) => (b.updatedAt || '') > (a.updatedAt || '') ? 1 : -1);
+  if (!recs.length) {
+    list.innerHTML = `<div class="records-empty"><div class="icon">🌿</div><p>Sin visitas registradas.</p><p style="margin-top:8px;font-size:10px">Toca "Nueva visita" para empezar.</p></div>`;
+    return;
+  }
+  list.innerHTML = recs.map(r => `
+    <div class="record-card">
+      <div onclick="loadRecord('${r.id}')">
+        <div class="record-card-header">
+          <div class="record-name">${r.ref || 'Sin referencia'}</div>
+          <div class="record-date">${r.fecha || '—'}</div>
+        </div>
+        <div class="record-meta">
+          SINCA: ${r.sinca || '—'} · Aforo: ${r.caudal || '—'} l/s · Cultivo: ${r.area_cultivo || '—'} ha · Bosque: ${r.area_bosque || '—'} ha<br>
+          Usos: ${(r.usos || []).join(', ') || '—'}
+        </div>
+      </div>
+      <div class="record-footer">
+        <span class="record-status status-${r.status}">${r.status === 'completo' ? 'COMPLETO' : 'BORRADOR'}</span>
+        <button class="record-del" onclick="deleteRecord(event, '${r.id}', '${(r.ref || 'este registro').replace(/'/g, "\\'")}')">🗑 Borrar</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteRecord(ev, id, ref) {
+  ev.stopPropagation();
+  customConfirm('¿Borrar "' + ref + '"?\n\nEsta acción no se puede deshacer.', 'Borrar', () => {
+    saveRecords(getRecords().filter(r => r.id !== id));
+    if (currentId === id) currentId = null;
+    renderRecords();
+    showNotif('🗑 Registro borrado');
+  });
+}
+
+// Cuadro de confirmación propio (los confirm() nativos no funcionan en
+// algunos navegadores embebidos de iOS como Documents by Readdle)
+let _confirmCallback = null;
+function customConfirm(message, okLabel, onConfirm) {
+  _confirmCallback = onConfirm;
+  document.getElementById('modalMsg').textContent = message;
+  document.getElementById('modalOk').textContent = okLabel || 'Aceptar';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function renderExportPicker() {
+  const sel = document.getElementById('exportSelect');
+  sel.innerHTML = '<option value="">-- Seleccionar --</option>' +
+    getRecords().map(r => `<option value="${r.id}">${r.ref || '?'} · ${r.fecha || '?'} (${r.status})</option>`).join('');
+}
+
+function previewExport() {
+  const id = document.getElementById('exportSelect').value;
+  const el = document.getElementById('exportPreview');
+  if (!id) { el.textContent = 'Selecciona un registro para previsualizar...'; return; }
+  const r = getRecords().find(x => x.id === id);
+  if (r) el.textContent = generateReport(r);
+}
+
+function fmtCoord(c) {
+  if (!c) return '—';
+  const has = v => v !== undefined && v !== '';
+  const lat = (has(c.lat_g) || has(c.lat_m) || has(c.lat_s)) ? `${c.lat_g || 0}° ${c.lat_m || 0}' ${c.lat_s || 0}" N` : '—';
+  const lon = (has(c.lon_g) || has(c.lon_m) || has(c.lon_s)) ? `${c.lon_g || 0}° ${c.lon_m || 0}' ${c.lon_s || 0}" W` : '—';
+  return `Lat ${lat}  /  Lon ${lon}`;
+}
+function listCoords(arr, base) {
+  return (arr && arr.length) ? arr.map((c, i) => `  ${base} ${i + 1}: ${fmtCoord(c)}`).join('\n') : '  —';
+}
+
+function generateReport(r) {
+  const usos = (r.usos || []).join(', ').toUpperCase() || '—';
+  const septicoTipo = (r.septico_tipo === 'Otro' && r.septico_otro) ? `Otro — ${r.septico_otro}` : (r.septico_tipo || '—');
+  return `DATOS DE LA VISITA DE CAMPO
+===========================
+Referencia: ${r.ref || '—'}
+Número SINCA: ${r.sinca || '—'}
+Fecha de visita: ${r.fecha || '—'}
+Teléfono de contacto: ${r.telefono || '—'}
+
+USOS SOLICITADOS
+================
+${usos}
+Cantidad y detalle: ${r.usos_detalle || '—'}
+
+COSTO DEL PROYECTO
+==================
+$${r.costo || '—'}
+
+CAUDAL AFORADO FUENTE
+======================
+${r.caudal || '—'} l/s${r.fuente ? `  (${r.fuente})` : ''}
+Capacidad del balde: ${r.balde_cap || '—'} litros
+Medidas del balde: ${r.balde_medidas || '—'}
+
+COORDENADAS PUNTO DE CAPTACIÓN
+================================
+Geográficas:  Lat ${r.lat || '—'}  /  Lon ${r.lon || '—'}
+Planas:       N ${r.norte || '—'}  /  E ${r.este || '—'}  /  Cota ${r.cota || '—'} m.s.n.m.
+
+ÁREAS DEL PREDIO
+================
+Extensión total del terreno: ${r.extension || '—'} ha
+Área en cultivo: ${r.area_cultivo || '—'} ha
+Área en bosque:  ${r.area_bosque || '—'} ha
+
+SUELO, PENDIENTE Y VEGETACIÓN
+==============================
+Tipo de suelo: ${r.tipo_suelo || '—'}
+Pendientes (%): ${r.pendiente1 || '—'} / ${r.pendiente2 || '—'}
+Vegetación: ${r.vegetacion || '—'}
+
+NÚMERO DE VIVIENDAS Y DISEÑO
+==============================
+Número: ${r.num_viviendas || '—'}
+Coordenadas elipsoidales:
+${listCoords(r.viviendas_coords, 'Vivienda')}
+${r.vivienda_desc || '—'}
+
+SISTEMA SÉPTICO Y SU DISEÑO
+=============================
+Tipo: ${septicoTipo}
+Cantidad de sistemas: ${r.num_septicos || '—'}
+${r.septico_desc || '—'}
+
+SISTEMA DE CAPTACIÓN Y CONDUCCIÓN
+===================================
+Captación:
+${r.captacion || '—'}
+
+Conducción:
+${r.conduccion || '—'}
+
+Sitio(s) de recepción:
+${r.recepcion || '—'}
+
+COORDENADAS DE TANQUES (ELIPSOIDALES)
+=======================================
+Tanques de recepción: ${r.num_tq_recepcion || '—'}
+${listCoords(r.tq_recepcion, 'Tanque de recepción')}
+Tanques sedimentadores: ${r.num_tq_sedimentador || '—'}
+${listCoords(r.tq_sedimentador, 'Tanque sedimentador')}
+
+SERVIDUMBRE
+===========
+${r.servidumbre || '—'}
+${r.serv_obs || ''}
+
+DERIVACIONES PARA OTROS USOS QUE PUEDAN RESULTAR AFECTADOS
+===========================================================
+${r.derivacion || '—'}
+${r.deriv_desc || ''}
+
+LUGAR Y FORMA DE RESTITUCIÓN DE SOBRANTES
+===========================================
+Lugar: ${r.restitucion || '—'}
+${r.rest_obs || ''}`;
+}
+
+function copyExport() {
+  const txt = document.getElementById('exportPreview').textContent;
+  if (!txt || txt.includes('Selecciona un')) { showNotif('⚠ Selecciona un registro'); return; }
+  navigator.clipboard.writeText(txt).then(() => showNotif('✓ Texto copiado')).catch(() => showNotif('⚠ Copia manualmente'));
+}
+
+function exportJSON() {
+  const recs = getRecords();
+  if (!recs.length) { showNotif('⚠ No hay registros'); return; }
+  const blob = new Blob([JSON.stringify(recs, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `campo_ambiental_${new Date().toISOString().split('T')[0]}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  showNotif('✓ JSON descargado');
+}
+
+function importJSONFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => applyImport(reader.result);
+  reader.onerror = () => showNotif('⚠ No se pudo leer el archivo');
+  reader.readAsText(file);
+  document.getElementById('importFile').value = '';
+}
+
+function applyImport(text) {
+  let incoming;
+  try { incoming = JSON.parse(text); } catch { showNotif('⚠ El archivo no es un JSON válido'); return; }
+  if (!Array.isArray(incoming)) { showNotif('⚠ El respaldo no tiene el formato esperado'); return; }
+  const valid = incoming.filter(r => r && typeof r === 'object' && r.id);
+  if (!valid.length) { showNotif('⚠ El respaldo no contiene registros'); return; }
+  const recs = getRecords();
+  let nuevos = 0, actualizados = 0;
+  valid.forEach(imp => {
+    const i = recs.findIndex(r => r.id === imp.id);
+    if (i < 0) { recs.push(imp); nuevos++; }
+    else if ((imp.updatedAt || '') > (recs[i].updatedAt || '')) { recs[i] = imp; actualizados++; }
+  });
+  saveRecords(recs);
+  renderExportPicker();
+  showNotif(`✓ Importado: ${nuevos} nuevos · ${actualizados} actualizados`);
+}
+
+let _nt;
+function showNotif(msg) {
+  const el = document.getElementById('notif'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(_nt); _nt = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+document.getElementById('f_fecha').value = new Date().toISOString().split('T')[0];
+
+// Botones del cuadro de confirmación
+document.getElementById('modalOk').addEventListener('click', () => {
+  document.getElementById('modalOverlay').classList.remove('show');
+  if (_confirmCallback) { const cb = _confirmCallback; _confirmCallback = null; cb(); }
+});
+document.getElementById('modalCancel').addEventListener('click', () => {
+  document.getElementById('modalOverlay').classList.remove('show');
+  _confirmCallback = null;
+});
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') {
+    document.getElementById('modalOverlay').classList.remove('show');
+    _confirmCallback = null;
+  }
+});
+
+renderRecords();
+
+// Registro del service worker: permite instalar la app y abrirla sin internet
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>

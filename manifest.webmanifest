@@ -1,0 +1,16 @@
+{
+  "name": "Campo Ambiental · CDMB",
+  "short_name": "Campo Ambiental",
+  "description": "Recolección de datos de campo para concesiones de aguas. Funciona sin internet.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1a0f",
+  "theme_color": "#1a2e1a",
+  "lang": "es",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
