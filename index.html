@@ -29,7 +29,7 @@
     --serif: Georgia, 'Times New Roman', serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; min-height: 100vh; }
+  body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 13px; min-height: 100vh; padding-bottom: 32px; }
 
   .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; }
   .header-logo { width: 36px; height: 36px; background: var(--verde); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
@@ -37,18 +37,19 @@
   .header-title { font-family: var(--serif); font-size: 15px; color: var(--accent); }
   .header-sub { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
   .offline-badge { background: var(--accent); color: #0a1a0a; font-size: 9px; padding: 2px 7px; border-radius: 20px; font-weight: 600; letter-spacing: 0.05em; flex-shrink: 0; }
+  .autosave-badge { font-size: 9px; color: var(--text-dim); margin-right: 4px; }
 
-  .nav { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+  .nav { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; position: sticky; top: 61px; z-index: 99; }
   .nav::-webkit-scrollbar { display: none; }
   .nav-tab { padding: 10px 16px; font-size: 10px; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.15s; flex-shrink: 0; }
   .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  .content { padding: 16px; max-width: 600px; margin: 0 auto; }
+  .content { padding: 16px; max-width: 640px; margin: 0 auto; }
   .section-header { font-family: var(--serif); font-size: 18px; color: var(--accent); margin-bottom: 4px; }
-  .section-sub { font-size: 10px; color: var(--text-dim); margin-bottom: 20px; letter-spacing: 0.04em; }
+  .section-sub { font-size: 10px; color: var(--text-dim); margin-bottom: 16px; letter-spacing: 0.04em; }
 
   .field-group { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
-  .field-group-title { font-size: 10px; color: var(--verde-menta); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .field-group-title { font-size: 10px; color: var(--verde-menta); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .field { margin-bottom: 12px; }
   .field:last-child { margin-bottom: 0; }
 
@@ -60,9 +61,11 @@
   select option { background: var(--bg3); }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .field-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
 
   .coord-box { background: var(--bg); border: 1px solid var(--verde); border-radius: 6px; padding: 10px; margin-bottom: 8px; }
-  .coord-label { font-size: 10px; color: var(--verde-menta); margin-bottom: 8px; letter-spacing: 0.08em; }
+  .coord-label { font-size: 10px; color: var(--verde-menta); margin-bottom: 8px; letter-spacing: 0.08em; display: flex; justify-content: space-between; align-items: center; }
+  .coord-plane-pill { font-size: 10px; color: var(--accent); background: #132613; border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; margin-top: 8px; text-align: center; }
   .gps-btn { width: 100%; padding: 10px; background: var(--verde); border: none; border-radius: 5px; color: var(--text); font-family: var(--mono); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
   .gps-btn:active { background: var(--verde-claro); }
   .gps-status { font-size: 10px; color: var(--text-dim); text-align: center; margin-top: 6px; }
@@ -73,13 +76,26 @@
   .toggle-btn { padding: 6px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; color: var(--text-dim); font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
   .toggle-btn.active { background: var(--verde); border-color: var(--verde-claro); color: var(--text); }
 
+  .calc-summary { background: #102112; border: 1px solid var(--verde-claro); border-radius: 6px; padding: 10px 12px; margin-top: 10px; font-size: 11px; line-height: 1.7; color: var(--text); }
+  .calc-summary strong { color: var(--accent); }
+  .calc-summary .warn-txt { color: var(--warn); }
+
+  .timer-bar { display: flex; gap: 6px; align-items: center; margin-top: 6px; margin-bottom: 10px; }
+  .timer-display { font-size: 14px; font-weight: 700; color: var(--accent); background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; min-width: 78px; text-align: center; }
+  .btn-xs { padding: 7px 10px; font-size: 11px; border-radius: 5px; font-family: var(--mono); cursor: pointer; border: 1px solid var(--border); background: var(--bg3); color: var(--text); }
+  .btn-xs.running { background: var(--danger); border-color: var(--danger); color: #fff; }
+
   .btn { padding: 12px 20px; border-radius: 6px; font-family: var(--mono); font-size: 13px; cursor: pointer; border: none; transition: all 0.15s; font-weight: 600; }
   .btn-primary { background: var(--verde-claro); color: #0a1a0a; }
   .btn-primary:active { background: var(--accent); }
   .btn-secondary { background: var(--bg3); border: 1px solid var(--border); color: var(--text); }
   .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
   .btn-full { width: 100%; }
+  .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
   .actions { display: flex; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+  .search-bar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .stats-bar { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; display: flex; justify-content: space-between; }
 
   .records-empty { text-align: center; padding: 40px 20px; color: var(--text-dim); }
   .records-empty .icon { font-size: 40px; margin-bottom: 12px; }
@@ -93,14 +109,14 @@
   .record-status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; letter-spacing: 0.06em; margin-top: 6px; }
   .status-borrador { background: #2a2000; color: var(--warn); border: 1px solid var(--warn); }
   .status-completo { background: #0a2010; color: var(--accent); border: 1px solid var(--accent); }
-  .record-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .record-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
   .record-del { background: transparent; border: 1px solid var(--danger); color: var(--danger); font-family: var(--mono); font-size: 11px; padding: 4px 12px; border-radius: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .record-del:active { background: var(--danger); color: #1a0000; }
 
   .export-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
   .export-title { font-size: 11px; color: var(--verde-menta); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
   .export-desc { font-size: 11px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.6; }
-  .export-preview { background: var(--bg); padding: 12px; border-radius: 5px; font-size: 11px; line-height: 1.8; color: var(--text-dim); white-space: pre-wrap; max-height: 320px; overflow-y: auto; border: 1px solid var(--border); }
+  .export-preview { background: var(--bg); padding: 12px; border-radius: 5px; font-size: 11px; line-height: 1.8; color: var(--text-dim); white-space: pre-wrap; max-height: 340px; overflow-y: auto; border: 1px solid var(--border); }
 
   .notif { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg3); border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 12px; z-index: 999; transition: transform 0.3s; white-space: nowrap; }
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 24px; }
@@ -128,7 +144,8 @@
     <div class="header-title">Campo Ambiental</div>
     <div class="header-sub">Concesión Aguas · CDMB</div>
   </div>
-  <div class="offline-badge">OFFLINE OK</div>
+  <span class="autosave-badge" id="autosaveBadge"></span>
+  <div class="offline-badge" id="netBadge">OFFLINE OK</div>
 </div>
 
 <div class="nav">
@@ -153,9 +170,13 @@
 <div class="page active" id="page-registros">
   <div class="content">
     <p class="section-header">Visitas registradas</p>
-    <p class="section-sub">Guardadas en el dispositivo · funciona sin internet</p>
+    <p class="section-sub">Guardadas en el dispositivo · funciona 100 % sin internet</p>
+    <div class="search-bar">
+      <input type="search" id="searchInput" placeholder="🔍 Buscar por nombre, SINCA o uso..." oninput="renderRecords()">
+    </div>
+    <div class="stats-bar" id="recordsStats"></div>
     <div id="recordsList"></div>
-    <button class="btn btn-primary btn-full" onclick="showPage('form'); resetForm()">+ Nueva visita de campo</button>
+    <button class="btn btn-primary btn-full" onclick="startNewVisit()">+ Nueva visita de campo</button>
   </div>
 </div>
 
@@ -163,15 +184,15 @@
 <div class="page" id="page-form">
   <div class="content">
     <p class="section-header">Datos de campo</p>
-    <p class="section-sub">Solo lo que se recolecta en la visita</p>
+    <p class="section-sub">Guardado automático activado · conversión Gauss-Krüger y cálculos CDMB en vivo</p>
 
-    <!-- REFERENCIA (mínimo para identificar el registro) -->
+    <!-- REFERENCIA -->
     <div class="field-group">
-      <div class="field-group-title">📌 Referencia del caso</div>
+      <div class="field-group-title"><span>📌 Referencia y atención de la visita</span></div>
       <div class="field-row">
         <div class="field">
-          <label>Referencia / nombre <span class="req">*</span></label>
-          <input type="text" id="f_ref" placeholder="Ej: Finca El Paraíso">
+          <label>Referencia / predio <span class="req">*</span></label>
+          <input type="text" id="f_ref" placeholder="Ej: Finca Las Delicias">
         </div>
         <div class="field">
           <label>Fecha de visita</label>
@@ -181,18 +202,42 @@
       <div class="field-row">
         <div class="field">
           <label>Número SINCA</label>
-          <input type="text" id="f_sinca" inputmode="numeric" placeholder="36703">
+          <input type="text" id="f_sinca" inputmode="numeric" placeholder="37305">
         </div>
+        <div class="field">
+          <label>Expediente (opcional)</label>
+          <input type="text" id="f_expediente" placeholder="CA-0089-2026">
+        </div>
+      </div>
+      <div class="field-row">
         <div class="field">
           <label>Teléfono de contacto</label>
           <input type="tel" id="f_telefono" inputmode="tel" placeholder="300 123 4567">
         </div>
+        <div class="field">
+          <label>Costo del proyecto ($)</label>
+          <input type="text" id="f_costo" inputmode="numeric" placeholder="2.000.000">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Quien atendió la visita</label>
+          <input type="text" id="f_atendio_nombre" placeholder="Nombre (si hubo cambio de usos)">
+        </div>
+        <div class="field">
+          <label>Cédula y lugar expedición</label>
+          <input type="text" id="f_atendio_cedula" placeholder="Ej: 91.265.435 de Bucaramanga">
+        </div>
+      </div>
+      <div class="field">
+        <label>Ruta de acceso al predio (referencias desde Bucaramanga)</label>
+        <textarea id="f_acceso" placeholder="Ej: Vía Bucaramanga – Piedecuesta, vereda Las Vegas, desvío a la izquierda por vía terciaria durante 3,5 km hasta el predio..."></textarea>
       </div>
     </div>
 
-    <!-- USOS SOLICITADOS -->
+    <!-- USOS SOLICITADOS Y CALCULADORA DE NECESIDADES CDMB -->
     <div class="field-group">
-      <div class="field-group-title">🚰 Usos solicitados</div>
+      <div class="field-group-title"><span>🚰 Usos solicitados y cálculo de necesidades</span></div>
       <div class="toggle-group" id="usosGroup">
         <div class="toggle-btn" data-uso="Doméstico con consumo humano" onclick="toggleUso(this)">Doméstico con consumo humano</div>
         <div class="toggle-btn" data-uso="Doméstico sin consumo humano" onclick="toggleUso(this)">Doméstico sin consumo humano</div>
@@ -201,117 +246,218 @@
         <div class="toggle-btn" data-uso="Piscicultura" onclick="toggleUso(this)">Piscicultura</div>
         <div class="toggle-btn" data-uso="Industrial" onclick="toggleUso(this)">Industrial</div>
       </div>
+
+      <div class="dms-title" style="margin-top:12px">Cantidades verificadas en campo (calcula L/s y L/d automáticamente)</div>
+      <div class="field-row-3">
+        <div class="field">
+          <label>Permanentes (hab)</label>
+          <input type="number" id="f_cant_perm" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <label>Transitorios (hab)</label>
+          <input type="number" id="f_cant_trans" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <label>Vacunos / Equinos</label>
+          <input type="number" id="f_cant_vacunos" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+      </div>
+      <div class="field-row-3">
+        <div class="field">
+          <label>Porcinos (cerdos)</label>
+          <input type="number" id="f_cant_porcinos" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <label>Aves</label>
+          <input type="number" id="f_cant_aves" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <label>Riego jardines (m²)</label>
+          <input type="number" id="f_cant_riego_m2" min="0" step="1" inputmode="numeric" placeholder="0" oninput="recalcAll()">
+        </div>
+      </div>
+
+      <div id="needsSummary" class="calc-summary" style="display:none"></div>
+
       <div class="field" style="margin-top:12px">
-        <label>Cantidad y detalle de usos (escritura libre)</label>
-        <textarea id="f_usos_detalle" placeholder="Ej: 2 usos — doméstico con consumo humano para 1 vivienda (5 personas) y abrevadero para 8 bovinos..."></textarea>
+        <label>¿Hubo cambio de usos respecto al Auto de inicio?</label>
+        <input type="text" id="f_cambio_usos" placeholder="Ej: Se adiciona abrevadero / Se retira uso pecuario (piscícola)">
+      </div>
+      <div class="field">
+        <label>Cantidad y detalle de usos (observaciones adicionales)</label>
+        <textarea id="f_usos_detalle" placeholder="Ej: Doméstico con consumo humano para 8 permanentes y 6 transitorios; abrevadero para 20 vacunos..."></textarea>
       </div>
     </div>
 
-    <!-- COSTO DEL PROYECTO -->
+    <!-- CAUDAL AFORADO Y BALDE -->
     <div class="field-group">
-      <div class="field-group-title">💲 Costo del proyecto</div>
-      <div class="field">
-        <label>Costo ($)</label>
-        <input type="text" id="f_costo" inputmode="numeric" placeholder="20'000.000">
-      </div>
-    </div>
+      <div class="field-group-title"><span>📊 Aforo volumétrico de la fuente hídrica</span></div>
+      <div class="info-note">Si ingresas el volumen del balde (o su diámetro y altura de llenado) y los tiempos en segundos, la app calcula automáticamente el volumen en litros, el caudal aforado (L/s) y el medio mínimo estimado.</div>
 
-    <!-- CAUDAL AFORADO -->
-    <div class="field-group">
-      <div class="field-group-title">📊 Caudal aforado fuente</div>
+      <div class="field-row-3">
+        <div class="field">
+          <label>Capacidad balde (L)</label>
+          <input type="number" id="f_balde_cap" step="0.01" inputmode="decimal" placeholder="12" oninput="recalcAforo()">
+        </div>
+        <div class="field">
+          <label>Diámetro balde (cm)</label>
+          <input type="number" id="f_balde_diam" step="0.1" inputmode="decimal" placeholder="27" oninput="recalcAforo()">
+        </div>
+        <div class="field">
+          <label>Altura llenado (cm)</label>
+          <input type="number" id="f_balde_h" step="0.1" inputmode="decimal" placeholder="29" oninput="recalcAforo()">
+        </div>
+      </div>
+
+      <div class="dms-title">Tiempos de llenado (segundos) y cronómetro de apoyo</div>
+      <div class="timer-bar">
+        <div class="timer-display" id="swDisplay">0.00 s</div>
+        <button type="button" class="btn-xs" id="swStartBtn" onclick="toggleStopwatch()">▶ Iniciar</button>
+        <button type="button" class="btn-xs" onclick="assignStopwatch(1)">→ T1</button>
+        <button type="button" class="btn-xs" onclick="assignStopwatch(2)">→ T2</button>
+        <button type="button" class="btn-xs" onclick="assignStopwatch(3)">→ T3</button>
+        <button type="button" class="btn-xs" onclick="resetStopwatch()">↺</button>
+      </div>
+      <div class="field-row-3">
+        <div class="field">
+          <label>Tiempo 1 (s)</label>
+          <input type="number" id="f_t1" step="0.01" inputmode="decimal" placeholder="60.65" oninput="recalcAforo()">
+        </div>
+        <div class="field">
+          <label>Tiempo 2 (s)</label>
+          <input type="number" id="f_t2" step="0.01" inputmode="decimal" placeholder="61.24" oninput="recalcAforo()">
+        </div>
+        <div class="field">
+          <label>Tiempo 3 (s)</label>
+          <input type="number" id="f_t3" step="0.01" inputmode="decimal" placeholder="Opcional" oninput="recalcAforo()">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Caudal aforado (l/s)</label>
+          <input type="number" id="f_caudal" step="0.0001" inputmode="decimal" placeholder="0.1969" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <label>Diámetro en captación</label>
+          <select id="f_diametro_cap" onchange="recalcAll()">
+            <option value="¾″">¾″ (por defecto)</option>
+            <option value="½″">½″</option>
+            <option value="1″">1″</option>
+            <option value="1½″">1½″</option>
+            <option value="2″">2″</option>
+            <option value="3″">3″</option>
+          </select>
+        </div>
+      </div>
+
       <div class="field">
-        <label>Caudal aforado (l/s)</label>
-        <input type="number" id="f_caudal" step="0.001" placeholder="3.11">
+        <label>¿El sistema utiliza motobomba?</label>
+        <div class="toggle-group" id="motobombaGroup">
+          <div class="toggle-btn active" data-val="No" onclick="toggleMotobomba(this)">No (gravedad)</div>
+          <div class="toggle-btn" data-val="Sí" onclick="toggleMotobomba(this)">Sí (con motobomba)</div>
+        </div>
+      </div>
+
+      <div id="aforoSummary" class="calc-summary" style="display:none"></div>
+
+      <div class="field" style="margin-top:10px">
+        <label>Medidas adicionales del balde (nota opcional)</label>
+        <input type="text" id="f_balde_medidas" placeholder="Ej: Altura total 36 cm · llenado 29 cm · diám. 27 cm">
       </div>
       <div class="field">
-        <label>Capacidad del balde (litros)</label>
-        <input type="number" id="f_balde_cap" step="0.01" inputmode="decimal" placeholder="10">
-      </div>
-      <div class="field">
-        <label>Medidas del balde (si no se conoce la capacidad)</label>
-        <input type="text" id="f_balde_medidas" placeholder="Ej: Diám. sup. 30 cm · diám. inf. 25 cm · alto 35 cm">
-      </div>
-      <div class="field">
-        <label>Nombre / tipo de fuente (opcional)</label>
-        <input type="text" id="f_fuente" placeholder="Ej: Caño Innominado Código 106">
+        <label>Nombre / tipo de fuente en campo (opcional)</label>
+        <input type="text" id="f_fuente" placeholder="Ej: Quebrada La Faltriquera / Caño Innominado">
       </div>
     </div>
 
     <!-- COORDENADAS CAPTACIÓN -->
     <div class="field-group">
-      <div class="field-group-title">📍 Coordenadas punto de captación</div>
-      <div class="info-note">Toca el botón GPS para capturar automáticamente desde el celular.</div>
+      <div class="field-group-title"><span>📍 Coordenadas punto de captación</span></div>
+      <div class="info-note">Captura con GPS o escribe G/M/S: la app calcula automáticamente las coordenadas planas Magna-Sirgas Gauss-Krüger Bogotá.</div>
       <div class="coord-box">
-        <div class="coord-label">GEOGRÁFICAS (GPS del celular)</div>
-        <div class="field-row">
+        <div class="coord-label"><span>GEOGRÁFICAS (ELIPSOIDALES)</span></div>
+        <div class="dms-title">Latitud (N)</div>
+        <div class="field-row-3">
+          <div class="field"><label>Grados</label><input type="number" id="cap_lat_g" min="0" max="90" step="1" inputmode="numeric" placeholder="7" oninput="onCapDMSChange()"></div>
+          <div class="field"><label>Minutos</label><input type="number" id="cap_lat_m" min="0" max="59" step="1" inputmode="numeric" placeholder="0" oninput="onCapDMSChange()"></div>
+          <div class="field"><label>Segundos</label><input type="number" id="cap_lat_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="52.21" oninput="onCapDMSChange()"></div>
+        </div>
+        <div class="dms-title">Longitud (W)</div>
+        <div class="field-row-3">
+          <div class="field"><label>Grados</label><input type="number" id="cap_lon_g" min="0" max="180" step="1" inputmode="numeric" placeholder="73" oninput="onCapDMSChange()"></div>
+          <div class="field"><label>Minutos</label><input type="number" id="cap_lon_m" min="0" max="59" step="1" inputmode="numeric" placeholder="1" oninput="onCapDMSChange()"></div>
+          <div class="field"><label>Segundos</label><input type="number" id="cap_lon_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="37.23" oninput="onCapDMSChange()"></div>
+        </div>
+        <div class="field-row" style="margin-top:8px">
           <div class="field">
-            <label>Latitud</label>
-            <input type="text" id="f_lat" placeholder='7° 0&apos;6.7" N'>
+            <label>Texto Latitud</label>
+            <input type="text" id="f_lat" placeholder='7° 0&apos;52.21" N'>
           </div>
           <div class="field">
-            <label>Longitud</label>
-            <input type="text" id="f_lon" placeholder='73° 1&apos;42.90" W'>
+            <label>Texto Longitud</label>
+            <input type="text" id="f_lon" placeholder='73° 1&apos;37.23" W'>
           </div>
         </div>
-        <button class="gps-btn" onclick="captureGPS()">📡 Capturar GPS ahora</button>
+        <button type="button" class="gps-btn" onclick="captureGPS()">📡 Capturar GPS en captación</button>
         <div class="gps-status" id="gpsStatus">Toca para obtener ubicación</div>
       </div>
       <div class="coord-box">
-        <div class="coord-label">PLANAS — Magna-Sirgas (opcional)</div>
+        <div class="coord-label"><span>PLANAS — Magna-Sirgas Bogotá (calculadas automáticamente)</span></div>
         <div class="field-row-3">
-          <div class="field"><label>Norte</label><input type="text" id="f_norte" placeholder="1.266.151"></div>
-          <div class="field"><label>Este</label><input type="text" id="f_este" placeholder="1.115.907"></div>
-          <div class="field"><label>Cota</label><input type="number" id="f_cota" placeholder="1568"></div>
+          <div class="field"><label>Norte</label><input type="text" id="f_norte" placeholder="1.267.560"></div>
+          <div class="field"><label>Este</label><input type="text" id="f_este" placeholder="1.116.078"></div>
+          <div class="field"><label>Cota (m.s.n.m.)</label><input type="number" id="f_cota" placeholder="1492"></div>
         </div>
       </div>
     </div>
 
     <!-- ÁREAS -->
     <div class="field-group">
-      <div class="field-group-title">🌳 Áreas del predio</div>
-      <div class="field">
-        <label>Extensión total del terreno (ha)</label>
-        <input type="number" id="f_extension" step="0.0001" placeholder="1.3272">
-      </div>
-      <div class="field-row">
+      <div class="field-group-title"><span>🌳 Áreas del predio (ha)</span></div>
+      <div class="field-row-3">
         <div class="field">
-          <label>Área en cultivo (ha)</label>
-          <input type="number" id="f_area_cultivo" step="0.0001" placeholder="0.7475">
+          <label>Total predio (ha)</label>
+          <input type="number" id="f_extension" step="0.0001" inputmode="decimal" placeholder="0.8708">
         </div>
         <div class="field">
-          <label>Área en bosque (ha)</label>
-          <input type="number" id="f_area_bosque" step="0.0001" placeholder="0.5797">
+          <label>Cultivo (ha)</label>
+          <input type="number" id="f_area_cultivo" step="0.0001" inputmode="decimal" placeholder="0">
+        </div>
+        <div class="field">
+          <label>Bosque (ha)</label>
+          <input type="number" id="f_area_bosque" step="0.0001" inputmode="decimal" placeholder="5">
         </div>
       </div>
     </div>
 
     <!-- SUELO, PENDIENTE Y VEGETACIÓN -->
     <div class="field-group">
-      <div class="field-group-title">⛰️ Suelo, pendiente y vegetación</div>
+      <div class="field-group-title"><span>⛰️ Suelo, pendiente y vegetación en captación</span></div>
       <div class="field">
-        <label>Tipo de suelo</label>
-        <input type="text" id="f_tipo_suelo" placeholder="Ej: Franco arcilloso">
+        <label>Textura / tipo de suelo</label>
+        <input type="text" id="f_tipo_suelo" placeholder="Ej: Franco arcilloso / Arenoso">
       </div>
       <div class="field-row">
         <div class="field">
-          <label>Pendiente 1 (%)</label>
-          <input type="number" id="f_pendiente1" step="0.1" inputmode="decimal" placeholder="25">
+          <label>Pendiente captación (%)</label>
+          <input type="number" id="f_pendiente1" step="0.1" inputmode="decimal" placeholder="15">
         </div>
         <div class="field">
-          <label>Pendiente 2 (%)</label>
-          <input type="number" id="f_pendiente2" step="0.1" inputmode="decimal" placeholder="40">
+          <label>Pendiente alrededores (%)</label>
+          <input type="number" id="f_pendiente2" step="0.1" inputmode="decimal" placeholder="25">
         </div>
       </div>
       <div class="field">
-        <label>Vegetación</label>
-        <textarea id="f_vegetacion" placeholder="Ej: Rastrojo alto, guadua y árboles nativos en la ronda hídrica..."></textarea>
+        <label>Especies vegetales observadas</label>
+        <textarea id="f_vegetacion" placeholder="Ej: Aro, ortigo, platanillo, cordoncillo, bambú, helechos, yarumo, pastos y arbustos de bajo porte..."></textarea>
       </div>
     </div>
 
     <!-- VIVIENDAS -->
     <div class="field-group">
-      <div class="field-group-title">🏡 Número de viviendas y diseño</div>
-      <div class="info-note">Escoge el número de viviendas y la app pedirá las coordenadas elipsoidales de cada una.</div>
+      <div class="field-group-title"><span>🏡 Número de viviendas y diseño</span></div>
+      <div class="info-note">Escoge el número de viviendas para capturar sus coordenadas (calcula planas automáticamente) y cota.</div>
       <div class="field">
         <label>Número de viviendas</label>
         <select id="f_num_viviendas" onchange="onCountChange('viv', this.value)">
@@ -331,16 +477,16 @@
       </div>
       <div id="vivBlocks"></div>
       <div class="field">
-        <label>Descripción y diseño de las viviendas</label>
-        <textarea id="f_vivienda_desc" placeholder="Ej: Una vivienda de 2 pisos, 3 habitaciones, cocina, corredor, lavadero y 2 baños con ducha. Red PVC independiente para aguas residuales y grises..."></textarea>
+        <label>Descripción de la(s) vivienda(s) y redes hidrosanitarias</label>
+        <textarea id="f_vivienda_desc" placeholder="Ej: Una vivienda de 2 pisos, 4 habitaciones, sala, corredor, cocina, lavadero y 2 baños con ducha. Cuenta con una única tubería en PVC que conduce aguas residuales y grises..."></textarea>
       </div>
     </div>
 
     <!-- SISTEMA SÉPTICO -->
     <div class="field-group">
-      <div class="field-group-title">🔄 Sistema séptico y su diseño</div>
+      <div class="field-group-title"><span>🔄 Sistema de saneamiento básico</span></div>
       <div class="field">
-        <label>Tipo de sistema</label>
+        <label>Tipo de sistema séptico</label>
         <select id="f_septico_tipo" onchange="onSepticoTipoChange()">
           <option value="">-- Seleccionar --</option>
           <option value="Pozo séptico plástico con lecho filtrante">Pozo séptico plástico + lecho filtrante</option>
@@ -370,34 +516,39 @@
         </select>
       </div>
       <div class="field">
-        <label>Descripción del diseño</label>
-        <textarea id="f_septico_desc" placeholder="Ej: Pozo séptico de plástico enterrado, un único tanque con lecho filtrante integrado. Salida descarga hacia plantación de bambú..."></textarea>
+        <label>Descripción del sistema séptico (tanques, materiales, infiltración, destino aguas grises)</label>
+        <textarea id="f_septico_desc" placeholder="Ej: Trampa de grasas y pozo séptico compuesto por 3 tanques (dos en plástico y uno en concreto: absorción, lecho filtrante y campo de infiltración)..."></textarea>
       </div>
     </div>
 
     <!-- CAPTACIÓN Y CONDUCCIÓN -->
     <div class="field-group">
-      <div class="field-group-title">🏗️ Captación, conducción y recepción</div>
+      <div class="field-group-title"><span>🏗️ Captación, conducción y almacenamiento</span></div>
+      <div class="info-note">Recuerda: en los tanques de almacenamiento y sedimentadores anotamos su material y capacidad aproximada en <strong>litros</strong> (sin especificar dimensiones lineales en el informe).</div>
+      <div class="field">
+        <label>Longitud total de conducción (metros)</label>
+        <input type="number" id="f_longitud_conduccion" step="1" inputmode="numeric" placeholder="Ej: 342">
+      </div>
       <div class="field">
         <label>Obra de captación</label>
-        <textarea id="f_captacion" placeholder="Ej: Muro de presa en cemento 1.80 × 0.50 × 0.31 m. Manguera 2&quot; de 27 m hasta sedimentador (~600 l)..."></textarea>
+        <textarea id="f_captacion" placeholder="Ej: Manguera de 1″ sumergida sobre el lecho de la fuente hídrica. A 5 m llega a un tanque plástico de 500 litros que funciona como impulso y desarenador..."></textarea>
       </div>
       <div class="field">
-        <label>Sistema de conducción</label>
-        <textarea id="f_conduccion" placeholder="Ej: Manguera 2&quot; de 322 m hasta tanque comunitario 1.911 l, luego ½&quot; de 365 m a segundo tanque..."></textarea>
+        <label>Sistema de conducción y distribución</label>
+        <textarea id="f_conduccion" placeholder="Ej: Conducción en manguera de 2″ con reducción a 1″ y ½″ durante 342 metros hasta el tanque de recepción; distribución en tubería PVC de ½″..."></textarea>
       </div>
       <div class="field">
-        <label>Sitio(s) de recepción (descripción)</label>
-        <textarea id="f_recepcion" placeholder="Recepción 1: Tanque comunitario cemento ~1.911 l · Cota 1524&#10;Recepción 2: ...&#10;Almacenamiento final: Tanque ~42.000 l · Cota 1326..."></textarea>
+        <label>Sitio(s) de recepción y capacidades en litros</label>
+        <textarea id="f_recepcion" placeholder="Ej: Dentro del predio, en un tanque plástico de almacenamiento con capacidad de 5.000 litros..."></textarea>
       </div>
     </div>
 
     <!-- COORDENADAS DE TANQUES -->
     <div class="field-group">
-      <div class="field-group-title">📍 Coordenadas de tanques (elipsoidales)</div>
-      <div class="info-note">Escoge cuántos tanques hay y la app pedirá las coordenadas de cada uno en grados, minutos y segundos. Párate junto al tanque y usa el botón GPS para capturarlas automáticamente.</div>
+      <div class="field-group-title"><span>📍 Coordenadas y capacidad de tanques</span></div>
+      <div class="info-note">En cada tanque puedes registrar su capacidad en litros, material, cota y capturar sus coordenadas con GPS (calcula Norte y Este automáticamente).</div>
       <div class="field">
-        <label>¿Cuántos tanques de recepción hay?</label>
+        <label>¿Cuántos tanques de recepción/almacenamiento hay?</label>
         <select id="f_num_tq_recepcion" onchange="onCountChange('tqr', this.value)">
           <option value="">-- Seleccionar --</option>
           <option value="0">0</option>
@@ -410,7 +561,7 @@
       </div>
       <div id="tqrBlocks"></div>
       <div class="field" style="margin-top:12px">
-        <label>¿Cuántos tanques sedimentadores hay?</label>
+        <label>¿Cuántos tanques sedimentadores/desarenadores hay?</label>
         <select id="f_num_tq_sedimentador" onchange="onCountChange('tqs', this.value)">
           <option value="">-- Seleccionar --</option>
           <option value="0">0</option>
@@ -424,26 +575,33 @@
       <div id="tqsBlocks"></div>
     </div>
 
-    <!-- SERVIDUMBRE -->
+    <!-- SERVIDUMBRE Y TERRENOS -->
     <div class="field-group">
-      <div class="field-group-title">📜 Servidumbre</div>
+      <div class="field-group-title"><span>📜 Servidumbre y ocupación de terrenos</span></div>
       <div class="field">
         <label>¿Requiere servidumbre?</label>
         <div class="toggle-group" id="servGroup">
-          <div class="toggle-btn" data-val="No requiere" onclick="toggleSingle(this,'servGroup')">No requiere</div>
-          <div class="toggle-btn" data-val="Sí — verbal" onclick="toggleSingle(this,'servGroup')">Sí — verbal</div>
+          <div class="toggle-btn" data-val="No requiere" onclick="toggleSingle(this,'servGroup')">No requiere (mismo predio)</div>
+          <div class="toggle-btn" data-val="Sí — verbal" onclick="toggleSingle(this,'servGroup')">Sí — acuerdo verbal</div>
           <div class="toggle-btn" data-val="Sí — constituida formalmente" onclick="toggleSingle(this,'servGroup')">Sí — constituida</div>
         </div>
       </div>
       <div class="field">
-        <label>Observación</label>
-        <input type="text" id="f_serv_obs" placeholder="Ej: Servidumbre verbal con el vecino para paso por predio colindante">
+        <label>Obras que ocupen terrenos diferentes (`tech[29]`)</label>
+        <div class="toggle-group" id="obrasGroup">
+          <div class="toggle-btn" data-val="No existen obras que ocupen terrenos diferentes." onclick="toggleSingle(this,'obrasGroup')">No ocupan terrenos diferentes</div>
+          <div class="toggle-btn" data-val="Las obras están dentro del mismo predio." onclick="toggleSingle(this,'obrasGroup')">Dentro del mismo predio</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observación de servidumbre</label>
+        <input type="text" id="f_serv_obs" placeholder="Ej: Captación y conducción dentro del mismo predio">
       </div>
     </div>
 
     <!-- DERIVACIONES -->
     <div class="field-group">
-      <div class="field-group-title">🔀 Derivaciones para otros usos</div>
+      <div class="field-group-title"><span>🔀 Derivaciones para otros usos</span></div>
       <div class="field">
         <label>¿Existen derivaciones que puedan resultar afectadas?</label>
         <div class="toggle-group" id="derivGroup">
@@ -454,37 +612,37 @@
       </div>
       <div class="field">
         <label>Detalle (expediente, usuario, cota)</label>
-        <textarea id="f_deriv_desc" placeholder="Ej: Derivación asociada a concesión CA-0089-2022 en el punto de captación. Los usos otorgados no se verán afectados..."></textarea>
+        <textarea id="f_deriv_desc" placeholder="Ej: No existen derivaciones para otros usos en el punto de captación..."></textarea>
       </div>
     </div>
 
     <!-- RESTITUCIÓN -->
     <div class="field-group">
-      <div class="field-group-title">💧 Restitución de sobrantes</div>
+      <div class="field-group-title"><span>💧 Restitución de sobrantes</span></div>
       <div class="field">
         <label>Lugar de restitución</label>
         <div class="toggle-group" id="restGroup">
           <div class="toggle-btn" data-val="Punto de captación (rebose)" onclick="toggleSingle(this,'restGroup')">Captación (rebose)</div>
-          <div class="toggle-btn" data-val="Sedimentador (rebose)" onclick="toggleSingle(this,'restGroup')">Sedimentador</div>
-          <div class="toggle-btn" data-val="Punto de distribución" onclick="toggleSingle(this,'restGroup')">Distribución</div>
+          <div class="toggle-btn" data-val="Primer tanque / Sedimentador (rebose)" onclick="toggleSingle(this,'restGroup')">Primer tanque / Sedimentador</div>
+          <div class="toggle-btn" data-val="Captación y tanques de almacenamiento" onclick="toggleSingle(this,'restGroup')">Captación y tanques</div>
           <div class="toggle-btn" data-val="No es posible la restitución" onclick="toggleSingle(this,'restGroup')">No es posible</div>
         </div>
       </div>
       <div class="field">
-        <label>Forma y observaciones</label>
-        <input type="text" id="f_rest_obs" placeholder="Ej: Restitución por rebose en captación y sedimentador">
+        <label>Forma y observaciones de restitución</label>
+        <input type="text" id="f_rest_obs" placeholder="Ej: La restitución de sobrantes se realiza únicamente en el primer tanque mediante rebose">
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-secondary" onclick="saveRecord('borrador')">Guardar borrador</button>
-      <button class="btn btn-primary" onclick="saveRecord('completo')" style="flex:1">✓ Guardar</button>
+      <button type="button" class="btn btn-secondary" onclick="saveRecord('borrador')">Guardar borrador</button>
+      <button type="button" class="btn btn-primary" onclick="saveRecord('completo')" style="flex:1">✓ Guardar visita</button>
     </div>
     <div style="margin-top:10px">
-      <button class="btn btn-danger btn-full" onclick="resetForm()">Limpiar formulario</button>
+      <button type="button" class="btn btn-danger btn-full" onclick="resetForm()">Limpiar formulario</button>
     </div>
     <div style="margin-top:10px; display:none" id="deleteCurrentWrap">
-      <button class="btn btn-danger btn-full" onclick="deleteCurrent()">🗑 Borrar este registro</button>
+      <button type="button" class="btn btn-danger btn-full" onclick="deleteCurrent()">🗑 Borrar este registro</button>
     </div>
   </div>
 </div>
@@ -493,29 +651,33 @@
 <div class="page" id="page-exportar">
   <div class="content">
     <p class="section-header">Exportar</p>
-    <p class="section-sub">Texto listo para pegar en el Concepto Técnico</p>
+    <p class="section-sub">Texto `.txt` de visita o JSON directo para el generador Word CDMB</p>
 
     <div class="export-section">
       <div class="export-title">Seleccionar visita</div>
       <select id="exportSelect" onchange="previewExport()" style="margin-bottom:12px">
         <option value="">-- Seleccionar --</option>
       </select>
-      <div class="export-title">Vista previa</div>
+      <div class="export-title">Vista previa (`SINCA.txt`)</div>
       <div class="export-preview" id="exportPreview">Selecciona un registro para previsualizar...</div>
-      <button class="btn btn-primary btn-full" style="margin-top:10px" onclick="copyExport()">📋 Copiar texto</button>
+      <div class="btn-grid">
+        <button type="button" class="btn btn-primary" onclick="copyExport()">📋 Copiar texto</button>
+        <button type="button" class="btn btn-secondary" onclick="shareOrDownloadTxt()">📤 Compartir / .TXT</button>
+      </div>
+      <button type="button" class="btn btn-secondary btn-full" style="margin-top:8px; border-color:var(--verde-claro); color:var(--accent)" onclick="exportSingleCaseJSON()">⚡ Descargar caso_SINCA.json (Automatización Word)</button>
     </div>
 
     <div class="export-section">
-      <div class="export-title">💾 Respaldo JSON</div>
-      <div class="export-desc">Descarga todos los registros para guardar o pasar al PC.</div>
-      <button class="btn btn-secondary btn-full" onclick="exportJSON()">⬇ Descargar todos los registros</button>
+      <div class="export-title">💾 Respaldo completo JSON</div>
+      <div class="export-desc">Descarga todas las visitas guardadas en este teléfono para respaldar o pasar al PC.</div>
+      <button type="button" class="btn btn-secondary btn-full" onclick="exportJSON()">⬇ Descargar todos los registros</button>
     </div>
 
     <div class="export-section">
       <div class="export-title">📥 Importar respaldo JSON</div>
-      <div class="export-desc">Carga un respaldo descargado en otro teléfono. Los registros se combinan con los de este dispositivo (gana el más reciente).</div>
+      <div class="export-desc">Carga un respaldo descargado en otro teléfono o PC. Los registros se combinan automáticamente (gana el más reciente).</div>
       <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importJSONFile(this.files[0])">
-      <button class="btn btn-secondary btn-full" onclick="document.getElementById('importFile').click()">⬆ Cargar respaldo JSON</button>
+      <button type="button" class="btn btn-secondary btn-full" onclick="document.getElementById('importFile').click()">⬆ Cargar respaldo JSON</button>
     </div>
   </div>
 </div>
@@ -523,11 +685,249 @@
 <script>
 const STORAGE_KEY = 'campo_ambiental_v3';
 let usosSelected = [];
-let servidumbre = '', derivacion = '', restitucion = '';
+let servidumbre = '', obrasTerrenos = '', derivacion = '', restitucion = '', tieneMotobomba = 'No';
 let currentId = null;
+let _autosaveTimer = null;
 
-function getRecords() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; } }
-function saveRecords(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+// Cronómetro de aforo
+let _swInterval = null, _swStart = 0, _swElapsed = 0;
+
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveRecords(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+// ===== Proyección MAGNA-SIRGAS Gauss-Krüger Bogotá (EPSG:3116) idéntica a src/rules.py =====
+function dmsToDecimal(deg, min, sec, hemi) {
+  const g = parseFloat(deg), m = parseFloat(min || 0), s = parseFloat(sec || 0);
+  if (isNaN(g)) return null;
+  const val = Math.abs(g) + (isNaN(m) ? 0 : m) / 60 + (isNaN(s) ? 0 : s) / 3600;
+  return (hemi === 'S' || hemi === 'W' || hemi === 'O') ? -val : val;
+}
+
+function gaussKrugerBogota(latDeg, lonDeg) {
+  if (latDeg === null || lonDeg === null || isNaN(latDeg) || isNaN(lonDeg)) return null;
+  const a = 6378137.0;
+  const f = 1 / 298.257222101;
+  const e2 = f * (2 - f);
+  const ep2 = e2 / (1 - e2);
+  const rad = Math.PI / 180;
+  const lat = latDeg * rad;
+  const lon = lonDeg * rad;
+  const lat0 = 4.596200417 * rad;
+  const lon0 = -74.077507917 * rad;
+
+  const meridionalArc = phi => a * (
+    (1 - e2 / 4 - 3 * e2 * e2 / 64 - 5 * Math.pow(e2, 3) / 256) * phi
+    - (3 * e2 / 8 + 3 * e2 * e2 / 32 + 45 * Math.pow(e2, 3) / 1024) * Math.sin(2 * phi)
+    + (15 * e2 * e2 / 256 + 45 * Math.pow(e2, 3) / 1024) * Math.sin(4 * phi)
+    - (35 * Math.pow(e2, 3) / 3072) * Math.sin(6 * phi)
+  );
+
+  const n = a / Math.sqrt(1 - e2 * Math.pow(Math.sin(lat), 2));
+  const t = Math.pow(Math.tan(lat), 2);
+  const c = ep2 * Math.pow(Math.cos(lat), 2);
+  const aa = (lon - lon0) * Math.cos(lat);
+
+  const east = 1000000 + n * (
+    aa
+    + (1 - t + c) * Math.pow(aa, 3) / 6
+    + (5 - 18 * t + t * t + 72 * c - 58 * ep2) * Math.pow(aa, 5) / 120
+  );
+  const north = 1000000 + meridionalArc(lat) - meridionalArc(lat0) + n * Math.tan(lat) * (
+    aa * aa / 2
+    + (5 - t + 9 * c + 4 * c * c) * Math.pow(aa, 4) / 24
+    + (61 - 58 * t + t * t + 600 * c - 330 * ep2) * Math.pow(aa, 6) / 720
+  );
+  return { north: Math.round(north), east: Math.round(east) };
+}
+
+function fmtMeters(val) {
+  if (val === null || val === undefined || isNaN(val)) return '—';
+  return Math.round(val).toLocaleString('es-CO');
+}
+
+function parseDMSString(str) {
+  if (!str) return null;
+  const nums = String(str).match(/\d+(?:[.,]\d+)?/g);
+  if (!nums || nums.length < 2) return null;
+  return [
+    parseInt(nums[0], 10),
+    parseInt(nums[1] || '0', 10),
+    parseFloat(String(nums[2] || '0').replace(',', '.'))
+  ];
+}
+
+function onCapDMSChange() {
+  const lg = document.getElementById('cap_lat_g').value;
+  const lm = document.getElementById('cap_lat_m').value;
+  const ls = document.getElementById('cap_lat_s').value;
+  const og = document.getElementById('cap_lon_g').value;
+  const om = document.getElementById('cap_lon_m').value;
+  const os = document.getElementById('cap_lon_s').value;
+
+  if (lg !== '' && lm !== '' && ls !== '') {
+    document.getElementById('f_lat').value = `${lg}°${lm}'${parseFloat(ls).toFixed(2)}" N`;
+  }
+  if (og !== '' && om !== '' && os !== '') {
+    document.getElementById('f_lon').value = `${og}°${om}'${parseFloat(os).toFixed(2)}" W`;
+  }
+  const latDec = dmsToDecimal(lg, lm, ls, 'N');
+  const lonDec = dmsToDecimal(og, om, os, 'W');
+  if (latDec !== null && lonDec !== null) {
+    const gk = gaussKrugerBogota(latDec, lonDec);
+    if (gk) {
+      document.getElementById('f_norte').value = fmtMeters(gk.north);
+      document.getElementById('f_este').value = fmtMeters(gk.east);
+    }
+  }
+  scheduleAutosave();
+}
+
+// ===== Cronómetro y calculadora de aforo volumétrico =====
+function toggleStopwatch() {
+  const btn = document.getElementById('swStartBtn');
+  if (_swInterval) {
+    clearInterval(_swInterval);
+    _swInterval = null;
+    _swElapsed += (performance.now() - _swStart) / 1000;
+    btn.textContent = '▶ Cont.';
+    btn.classList.remove('running');
+  } else {
+    _swStart = performance.now();
+    btn.textContent = '⏸ Parar';
+    btn.classList.add('running');
+    _swInterval = setInterval(() => {
+      const cur = _swElapsed + (performance.now() - _swStart) / 1000;
+      document.getElementById('swDisplay').textContent = cur.toFixed(2) + ' s';
+    }, 50);
+  }
+}
+
+function resetStopwatch() {
+  if (_swInterval) { clearInterval(_swInterval); _swInterval = null; }
+  _swElapsed = 0;
+  const btn = document.getElementById('swStartBtn');
+  btn.textContent = '▶ Iniciar';
+  btn.classList.remove('running');
+  document.getElementById('swDisplay').textContent = '0.00 s';
+}
+
+function assignStopwatch(slot) {
+  const cur = _swInterval ? (_swElapsed + (performance.now() - _swStart) / 1000) : _swElapsed;
+  if (cur <= 0) return;
+  document.getElementById('f_t' + slot).value = cur.toFixed(2);
+  resetStopwatch();
+  recalcAforo();
+}
+
+function recalcAforo() {
+  const diam = parseFloat(document.getElementById('f_balde_diam').value);
+  const h = parseFloat(document.getElementById('f_balde_h').value);
+  const capInput = document.getElementById('f_balde_cap');
+
+  // Si ingresaron diámetro y altura de llenado, calcular volumen cilíndrico V = pi * r^2 * h / 1000
+  if (!isNaN(diam) && diam > 0 && !isNaN(h) && h > 0) {
+    const r = diam / 2.0;
+    const vol = Math.PI * r * r * h / 1000.0;
+    capInput.value = vol.toFixed(4);
+  }
+
+  const volL = parseFloat(capInput.value);
+  const tiempos = [1, 2, 3]
+    .map(i => parseFloat(document.getElementById('f_t' + i).value))
+    .filter(v => !isNaN(v) && v > 0);
+
+  if (!isNaN(volL) && volL > 0 && tiempos.length > 0) {
+    const tProm = tiempos.reduce((a, b) => a + b, 0) / tiempos.length;
+    const q = volL / tProm;
+    document.getElementById('f_caudal').value = q.toFixed(4);
+  }
+  recalcAll();
+}
+
+// ===== Calculadora en vivo de necesidades CDMB y Medio Mínimo (Excel CDMB) =====
+function recalcAll() {
+  const tieneConsumoHumano = usosSelected.includes('Doméstico con consumo humano') || !usosSelected.includes('Doméstico sin consumo humano');
+  const dotPerm = tieneConsumoHumano ? 150 : 50;
+
+  const nPerm = parseInt(document.getElementById('f_cant_perm').value || '0', 10) || 0;
+  const nTrans = parseInt(document.getElementById('f_cant_trans').value || '0', 10) || 0;
+  const nVac = parseInt(document.getElementById('f_cant_vacunos').value || '0', 10) || 0;
+  const nPorc = parseInt(document.getElementById('f_cant_porcinos').value || '0', 10) || 0;
+  const nAves = parseInt(document.getElementById('f_cant_aves').value || '0', 10) || 0;
+  const nRiego = parseInt(document.getElementById('f_cant_riego_m2').value || '0', 10) || 0;
+
+  const items = [];
+  const addRow = (label, dot, cant) => {
+    if (cant <= 0) return;
+    const qLs = Math.round(((dot * cant) / 86400.0) * 10000) / 10000;
+    const qLd = Math.round((qLs * 86400.0) * 100) / 100;
+    items.push({ label, dot, cant, qLs, qLd });
+  };
+  addRow(`Permanentes (${dotPerm} L/d*hab)`, dotPerm, nPerm);
+  addRow('Transitorios (50 L/d*hab)', 50, nTrans);
+  addRow('Vacunos/Equinos (40 L/d*animal)', 40, nVac);
+  addRow('Porcinos (10 L/d*animal)', 10, nPorc);
+  addRow('Aves (0,25 L/d*ave)', 0.25, nAves);
+  addRow('Riego (0,5 L/d*m2)', 0.5, nRiego);
+
+  const totalLs = Math.round(items.reduce((s, x) => s + x.qLs, 0) * 10000) / 10000;
+  const totalLd = Math.round(totalLs * 86400.0 * 100) / 100;
+
+  const needsBox = document.getElementById('needsSummary');
+  if (items.length > 0) {
+    const pueaaCompleto = nVac > 45 || nPorc > 100 || nAves > 10000;
+    needsBox.style.display = 'block';
+    needsBox.innerHTML =
+      items.map(x => `• ${x.label} × ${x.cant} = <strong>${x.qLs.toFixed(4)} L/s</strong> (${x.qLd.toFixed(2)} L/d)`).join('<br>') +
+      `<br><strong>TOTAL DEMANDADO: ${totalLs.toFixed(4)} L/s = ${totalLd.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} L/d</strong>` +
+      (pueaaCompleto ? `<br><span class="warn-txt">⚠ Supera umbral comercial → requiere PUEAA Completo y 500 plántulas.</span>` : '');
+  } else {
+    needsBox.style.display = 'none';
+  }
+
+  // Resumen de Aforo y Medio Mínimo (regla Excel CDMB)
+  const aforoBox = document.getElementById('aforoSummary');
+  const aforoLs = parseFloat(document.getElementById('f_caudal').value);
+  if (!isNaN(aforoLs) && aforoLs > 0) {
+    const c16 = aforoLs * 0.70;
+    const c16Round = Math.round(c16 * 10000) / 10000;
+    let html = `Aforo: <strong>${aforoLs.toFixed(4)} L/s</strong> · 70 % base: <strong>${c16Round.toFixed(4)} L/s</strong>`;
+    if (totalLs > 0) {
+      const pctRaw = (totalLs / c16) * 100.0;
+      const pct1Dec = Math.round(pctRaw * 10) / 10;
+      if (pct1Dec < 5.0) {
+        const diam = document.getElementById('f_diametro_cap').value || '¾″';
+        html += `<br>Demanda: <strong>${pct1Dec.toFixed(1)} % (&lt; 5 %)</strong> → Medio mínimo: <strong>${c16Round.toFixed(4)} L/s</strong> · <strong>DIÁMETRO A AUTORIZAR: ${diam}</strong>`;
+      } else {
+        const pctInt = Math.round(pct1Dec);
+        const mmFinal = (tieneMotobomba === 'Sí') ? c16Round : (Math.round(((100.0 * totalLs) / pctInt) * 10000) / 10000);
+        html += `<br>Demanda: <strong>${pct1Dec.toFixed(1)} %</strong> → <strong>PORCENTAJE A AUTORIZAR: ${pctInt} %</strong> · Medio mínimo estimado: <strong>${mmFinal.toFixed(4)} L/s</strong>`;
+      }
+      if (totalLs > c16) {
+        html += `<br><span class="warn-txt">⚠ ¡Atención! El caudal demandado supera el 70 % del aforo de la fuente.</span>`;
+      }
+    }
+    aforoBox.style.display = 'block';
+    aforoBox.innerHTML = html;
+  } else {
+    aforoBox.style.display = 'none';
+  }
+  scheduleAutosave();
+}
 
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -544,15 +944,21 @@ function captureGPS() {
   if (!navigator.geolocation) { st.textContent = 'GPS no disponible.'; st.className = 'gps-status err'; return; }
   navigator.geolocation.getCurrentPosition(pos => {
     const { latitude: lat, longitude: lon, altitude: alt, accuracy: acc } = pos.coords;
-    const toDMS = (deg, isLat) => {
+    const toParts = deg => {
       const d = Math.abs(deg), D = Math.floor(d), m = Math.floor((d - D) * 60);
       const s = (((d - D) * 60 - m) * 60).toFixed(2);
-      const dir = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
-      return `${D}°${m}'${s}" ${dir}`;
+      return [D, m, s];
     };
-    document.getElementById('f_lat').value = toDMS(lat, true);
-    document.getElementById('f_lon').value = toDMS(lon, false);
+    const [lg, lm, ls] = toParts(lat);
+    const [og, om, os] = toParts(lon);
+    document.getElementById('cap_lat_g').value = lg;
+    document.getElementById('cap_lat_m').value = lm;
+    document.getElementById('cap_lat_s').value = ls;
+    document.getElementById('cap_lon_g').value = og;
+    document.getElementById('cap_lon_m').value = om;
+    document.getElementById('cap_lon_s').value = os;
     if (alt) document.getElementById('f_cota').value = Math.round(alt);
+    onCapDMSChange();
     st.textContent = `✓ ±${Math.round(acc)}m · ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
     st.className = 'gps-status ok';
   }, err => {
@@ -561,11 +967,11 @@ function captureGPS() {
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
 }
 
-// ===== Bloques dinámicos de coordenadas elipsoidales (G/M/S) =====
+// ===== Bloques dinámicos de coordenadas elipsoidales (G/M/S + Planas + Cota + Capacidad en litros) =====
 const DMS_GROUPS = {
-  tqr: { container: 'tqrBlocks', label: 'Tanque de recepción' },
-  tqs: { container: 'tqsBlocks', label: 'Tanque sedimentador' },
-  viv: { container: 'vivBlocks', label: 'Vivienda' },
+  tqr: { container: 'tqrBlocks', label: 'Tanque de recepción', isTank: true },
+  tqs: { container: 'tqsBlocks', label: 'Tanque sedimentador', isTank: true },
+  viv: { container: 'vivBlocks', label: 'Vivienda', isTank: false },
 };
 const DMS_MAX = 10;
 
@@ -574,26 +980,51 @@ function renderDMSBlocks(prefix, count) {
   const cont = document.getElementById(grp.container);
   let html = '';
   for (let i = 1; i <= count; i++) {
+    const tankExtra = grp.isTank ? `
+      <div class="field-row" style="margin-bottom:8px">
+        <div class="field"><label>Capacidad (litros)</label><input type="number" id="${prefix}_${i}_cap_l" step="1" inputmode="numeric" placeholder="Ej: 5000" oninput="scheduleAutosave()"></div>
+        <div class="field"><label>Material / Nota</label><input type="text" id="${prefix}_${i}_mat" placeholder="Ej: Plástico / Cemento" oninput="scheduleAutosave()"></div>
+      </div>` : '';
     html += `
     <div class="coord-box">
-      <div class="coord-label">${grp.label.toUpperCase()} ${i}</div>
+      <div class="coord-label">
+        <span>${grp.label.toUpperCase()} ${i}</span>
+      </div>
+      ${tankExtra}
       <div class="dms-title">Latitud (N)</div>
       <div class="field-row-3">
-        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lat_g" min="0" max="90" step="1" inputmode="numeric" placeholder="7"></div>
-        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lat_m" min="0" max="59" step="1" inputmode="numeric" placeholder="0"></div>
-        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lat_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="6.70"></div>
+        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lat_g" min="0" max="90" step="1" inputmode="numeric" placeholder="7" oninput="updateBlockPlane('${prefix}', ${i})"></div>
+        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lat_m" min="0" max="59" step="1" inputmode="numeric" placeholder="0" oninput="updateBlockPlane('${prefix}', ${i})"></div>
+        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lat_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="6.70" oninput="updateBlockPlane('${prefix}', ${i})"></div>
       </div>
       <div class="dms-title">Longitud (W)</div>
       <div class="field-row-3">
-        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lon_g" min="0" max="180" step="1" inputmode="numeric" placeholder="73"></div>
-        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lon_m" min="0" max="59" step="1" inputmode="numeric" placeholder="1"></div>
-        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lon_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="42.90"></div>
+        <div class="field"><label>Grados</label><input type="number" id="${prefix}_${i}_lon_g" min="0" max="180" step="1" inputmode="numeric" placeholder="73" oninput="updateBlockPlane('${prefix}', ${i})"></div>
+        <div class="field"><label>Minutos</label><input type="number" id="${prefix}_${i}_lon_m" min="0" max="59" step="1" inputmode="numeric" placeholder="1" oninput="updateBlockPlane('${prefix}', ${i})"></div>
+        <div class="field"><label>Segundos</label><input type="number" id="${prefix}_${i}_lon_s" min="0" max="59.99" step="0.01" inputmode="decimal" placeholder="42.90" oninput="updateBlockPlane('${prefix}', ${i})"></div>
       </div>
-      <button class="gps-btn gps-btn-sm" onclick="captureGPSDMS('${prefix}', ${i})">📡 Capturar GPS aquí</button>
+      <div class="field" style="margin-top:8px">
+        <label>Cota (m.s.n.m. · opcional, o se calcula con DEM en PC)</label>
+        <input type="number" id="${prefix}_${i}_cota" step="1" inputmode="numeric" placeholder="Ej: 1417" oninput="scheduleAutosave()">
+      </div>
+      <div class="coord-plane-pill" id="${prefix}_${i}_plane">Planas Magna-Sirgas: N: — · E: —</div>
+      <button type="button" class="gps-btn gps-btn-sm" onclick="captureGPSDMS('${prefix}', ${i})">📡 Capturar GPS aquí</button>
       <div class="gps-status" id="${prefix}_${i}_status"></div>
     </div>`;
   }
   cont.innerHTML = html;
+}
+
+function updateBlockPlane(prefix, i) {
+  const v = id => document.getElementById(id)?.value?.trim() || '';
+  const latDec = dmsToDecimal(v(`${prefix}_${i}_lat_g`), v(`${prefix}_${i}_lat_m`), v(`${prefix}_${i}_lat_s`), 'N');
+  const lonDec = dmsToDecimal(v(`${prefix}_${i}_lon_g`), v(`${prefix}_${i}_lon_m`), v(`${prefix}_${i}_lon_s`), 'W');
+  const pill = document.getElementById(`${prefix}_${i}_plane`);
+  if (pill) {
+    const gk = (latDec !== null && lonDec !== null) ? gaussKrugerBogota(latDec, lonDec) : null;
+    pill.textContent = gk ? `Planas Magna-Sirgas: N: ${fmtMeters(gk.north)} – E: ${fmtMeters(gk.east)}` : 'Planas Magna-Sirgas: N: — · E: —';
+  }
+  scheduleAutosave();
 }
 
 function readDMSBlocks(prefix) {
@@ -604,6 +1035,9 @@ function readDMSBlocks(prefix) {
     out.push({
       lat_g: v(`${prefix}_${i}_lat_g`), lat_m: v(`${prefix}_${i}_lat_m`), lat_s: v(`${prefix}_${i}_lat_s`),
       lon_g: v(`${prefix}_${i}_lon_g`), lon_m: v(`${prefix}_${i}_lon_m`), lon_s: v(`${prefix}_${i}_lon_s`),
+      cota: v(`${prefix}_${i}_cota`),
+      cap_l: v(`${prefix}_${i}_cap_l`),
+      mat: v(`${prefix}_${i}_mat`),
     });
   }
   return out;
@@ -615,14 +1049,16 @@ function fillDMSBlocks(prefix, arr) {
     const s = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
     s(`${prefix}_${i}_lat_g`, c.lat_g); s(`${prefix}_${i}_lat_m`, c.lat_m); s(`${prefix}_${i}_lat_s`, c.lat_s);
     s(`${prefix}_${i}_lon_g`, c.lon_g); s(`${prefix}_${i}_lon_m`, c.lon_m); s(`${prefix}_${i}_lon_s`, c.lon_s);
+    s(`${prefix}_${i}_cota`, c.cota); s(`${prefix}_${i}_cap_l`, c.cap_l); s(`${prefix}_${i}_mat`, c.mat);
+    updateBlockPlane(prefix, i);
   });
 }
 
-// Al cambiar la cantidad se re-dibujan los bloques conservando lo ya escrito
 function onCountChange(prefix, val) {
   const prev = readDMSBlocks(prefix);
   renderDMSBlocks(prefix, parseInt(val || '0', 10) || 0);
   fillDMSBlocks(prefix, prev);
+  scheduleAutosave();
 }
 
 function captureGPSDMS(prefix, i) {
@@ -630,7 +1066,7 @@ function captureGPSDMS(prefix, i) {
   st.textContent = 'Obteniendo ubicación...'; st.className = 'gps-status';
   if (!navigator.geolocation) { st.textContent = 'GPS no disponible.'; st.className = 'gps-status err'; return; }
   navigator.geolocation.getCurrentPosition(pos => {
-    const { latitude: lat, longitude: lon, accuracy: acc } = pos.coords;
+    const { latitude: lat, longitude: lon, altitude: alt, accuracy: acc } = pos.coords;
     const dec = deg => {
       const d = Math.abs(deg), D = Math.floor(d), m = Math.floor((d - D) * 60);
       const s = (((d - D) * 60 - m) * 60).toFixed(2);
@@ -641,6 +1077,8 @@ function captureGPSDMS(prefix, i) {
     const [og, om, os] = dec(lon);
     set(`${prefix}_${i}_lat_g`, lg); set(`${prefix}_${i}_lat_m`, lm); set(`${prefix}_${i}_lat_s`, ls);
     set(`${prefix}_${i}_lon_g`, og); set(`${prefix}_${i}_lon_m`, om); set(`${prefix}_${i}_lon_s`, os);
+    if (alt) set(`${prefix}_${i}_cota`, Math.round(alt));
+    updateBlockPlane(prefix, i);
     st.textContent = `✓ ±${Math.round(acc)}m capturado`;
     st.className = 'gps-status ok';
   }, err => {
@@ -653,53 +1091,119 @@ function onSepticoTipoChange() {
   const esOtro = document.getElementById('f_septico_tipo').value === 'Otro';
   document.getElementById('septicoOtroWrap').style.display = esOtro ? 'block' : 'none';
   if (!esOtro) document.getElementById('f_septico_otro').value = '';
+  scheduleAutosave();
 }
 
 function toggleUso(el) {
   el.classList.toggle('active');
   const u = el.dataset.uso;
   usosSelected = el.classList.contains('active') ? [...new Set([...usosSelected, u])] : usosSelected.filter(x => x !== u);
+  recalcAll();
 }
+
+function toggleMotobomba(el) {
+  document.querySelectorAll('#motobombaGroup .toggle-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  tieneMotobomba = el.dataset.val;
+  recalcAll();
+}
+
 function toggleSingle(el, gid) {
   document.querySelectorAll('#' + gid + ' .toggle-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   if (gid === 'servGroup') servidumbre = el.dataset.val;
+  if (gid === 'obrasGroup') obrasTerrenos = el.dataset.val;
   if (gid === 'derivGroup') derivacion = el.dataset.val;
   if (gid === 'restGroup') restitucion = el.dataset.val;
+  scheduleAutosave();
 }
 
 function collectForm() {
   const g = id => document.getElementById(id)?.value?.trim() || '';
   return {
     id: currentId || Date.now().toString(),
-    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
-    ref: g('f_ref'), fecha: g('f_fecha'), sinca: g('f_sinca'), telefono: g('f_telefono'),
-    usos: [...usosSelected], usos_detalle: g('f_usos_detalle'), costo: g('f_costo'),
-    caudal: g('f_caudal'), balde_cap: g('f_balde_cap'), balde_medidas: g('f_balde_medidas'), fuente: g('f_fuente'),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    ref: g('f_ref'),
+    fecha: g('f_fecha'),
+    sinca: g('f_sinca'),
+    expediente: g('f_expediente'),
+    telefono: g('f_telefono'),
+    atendio_nombre: g('f_atendio_nombre'),
+    atendio_cedula: g('f_atendio_cedula'),
+    acceso: g('f_acceso'),
+    usos: [...usosSelected],
+    cant_perm: g('f_cant_perm'),
+    cant_trans: g('f_cant_trans'),
+    cant_vacunos: g('f_cant_vacunos'),
+    cant_porcinos: g('f_cant_porcinos'),
+    cant_aves: g('f_cant_aves'),
+    cant_riego_m2: g('f_cant_riego_m2'),
+    cambio_usos: g('f_cambio_usos'),
+    usos_detalle: g('f_usos_detalle'),
+    costo: g('f_costo'),
+    caudal: g('f_caudal'),
+    balde_cap: g('f_balde_cap'),
+    balde_diam: g('f_balde_diam'),
+    balde_h: g('f_balde_h'),
+    t1: g('f_t1'),
+    t2: g('f_t2'),
+    t3: g('f_t3'),
+    diametro_cap: g('f_diametro_cap'),
+    tiene_motobomba: tieneMotobomba,
+    balde_medidas: g('f_balde_medidas'),
+    fuente: g('f_fuente'),
+    cap_lat_g: g('cap_lat_g'), cap_lat_m: g('cap_lat_m'), cap_lat_s: g('cap_lat_s'),
+    cap_lon_g: g('cap_lon_g'), cap_lon_m: g('cap_lon_m'), cap_lon_s: g('cap_lon_s'),
     lat: g('f_lat'), lon: g('f_lon'), norte: g('f_norte'), este: g('f_este'), cota: g('f_cota'),
     extension: g('f_extension'), area_cultivo: g('f_area_cultivo'), area_bosque: g('f_area_bosque'),
     tipo_suelo: g('f_tipo_suelo'), pendiente1: g('f_pendiente1'), pendiente2: g('f_pendiente2'), vegetacion: g('f_vegetacion'),
     num_viviendas: g('f_num_viviendas'), viviendas_coords: readDMSBlocks('viv'), vivienda_desc: g('f_vivienda_desc'),
     septico_tipo: g('f_septico_tipo'), septico_otro: g('f_septico_otro'), septico_desc: g('f_septico_desc'),
     num_septicos: g('f_num_septicos'),
+    longitud_conduccion: g('f_longitud_conduccion'),
     captacion: g('f_captacion'), conduccion: g('f_conduccion'), recepcion: g('f_recepcion'),
     num_tq_recepcion: g('f_num_tq_recepcion'), tq_recepcion: readDMSBlocks('tqr'),
     num_tq_sedimentador: g('f_num_tq_sedimentador'), tq_sedimentador: readDMSBlocks('tqs'),
-    servidumbre, serv_obs: g('f_serv_obs'),
+    servidumbre, obras_terrenos: obrasTerrenos, serv_obs: g('f_serv_obs'),
     derivacion, deriv_desc: g('f_deriv_desc'),
     restitucion, rest_obs: g('f_rest_obs'),
   };
 }
 
+// Guardado automático silencioso cuando ya hay una referencia escrita
+function scheduleAutosave() {
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(() => {
+    const d = collectForm();
+    if (!d.ref) return;
+    currentId = d.id;
+    let recs = getRecords();
+    const idx = recs.findIndex(r => r.id === d.id);
+    d.status = (idx >= 0 && recs[idx].status === 'completo') ? 'completo' : 'borrador';
+    d.updatedAt = new Date().toISOString();
+    if (idx >= 0) recs[idx] = d; else recs.push(d);
+    saveRecords(recs);
+    const b = document.getElementById('autosaveBadge');
+    if (b) {
+      const hhmm = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      b.textContent = `✓ Guardado ${hhmm}`;
+    }
+  }, 900);
+}
+
 function saveRecord(status) {
+  clearTimeout(_autosaveTimer);
   const d = collectForm();
   if (!d.ref) { showNotif('⚠ Ingresa una referencia para el registro'); return; }
-  d.status = status; d.updatedAt = new Date().toISOString();
+  currentId = d.id;
+  d.status = status;
+  d.updatedAt = new Date().toISOString();
   let recs = getRecords();
   const i = recs.findIndex(r => r.id === d.id);
   if (i >= 0) recs[i] = d; else recs.push(d);
   saveRecords(recs);
-  showNotif(status === 'completo' ? '✓ Registro guardado' : '✓ Borrador guardado');
+  showNotif(status === 'completo' ? '✓ Visita guardada como completa' : '✓ Borrador guardado');
   showPage('registros');
 }
 
@@ -708,32 +1212,64 @@ function loadRecord(id) {
   if (!r) return;
   currentId = r.id;
   const s = (f, v) => { const el = document.getElementById(f); if (el) el.value = v || ''; };
-  s('f_ref', r.ref); s('f_fecha', r.fecha); s('f_sinca', r.sinca); s('f_telefono', r.telefono); s('f_costo', r.costo);
-  s('f_usos_detalle', r.usos_detalle);
-  s('f_caudal', r.caudal); s('f_balde_cap', r.balde_cap); s('f_balde_medidas', r.balde_medidas); s('f_fuente', r.fuente);
+  s('f_ref', r.ref); s('f_fecha', r.fecha); s('f_sinca', r.sinca); s('f_expediente', r.expediente);
+  s('f_telefono', r.telefono); s('f_costo', r.costo);
+  s('f_atendio_nombre', r.atendio_nombre); s('f_atendio_cedula', r.atendio_cedula); s('f_acceso', r.acceso);
+  s('f_cant_perm', r.cant_perm); s('f_cant_trans', r.cant_trans); s('f_cant_vacunos', r.cant_vacunos);
+  s('f_cant_porcinos', r.cant_porcinos); s('f_cant_aves', r.cant_aves); s('f_cant_riego_m2', r.cant_riego_m2);
+  s('f_cambio_usos', r.cambio_usos); s('f_usos_detalle', r.usos_detalle);
+  s('f_caudal', r.caudal); s('f_balde_cap', r.balde_cap); s('f_balde_diam', r.balde_diam); s('f_balde_h', r.balde_h);
+  s('f_t1', r.t1); s('f_t2', r.t2); s('f_t3', r.t3);
+  s('f_diametro_cap', r.diametro_cap || '¾″');
+  s('f_balde_medidas', r.balde_medidas); s('f_fuente', r.fuente);
+
+  // Coordenadas captación (soporta tanto G/M/S separados como texto legado)
+  if (r.cap_lat_g !== undefined && r.cap_lat_g !== '') {
+    s('cap_lat_g', r.cap_lat_g); s('cap_lat_m', r.cap_lat_m); s('cap_lat_s', r.cap_lat_s);
+    s('cap_lon_g', r.cap_lon_g); s('cap_lon_m', r.cap_lon_m); s('cap_lon_s', r.cap_lon_s);
+  } else {
+    const pLat = parseDMSString(r.lat), pLon = parseDMSString(r.lon);
+    if (pLat) { s('cap_lat_g', pLat[0]); s('cap_lat_m', pLat[1]); s('cap_lat_s', pLat[2]); }
+    if (pLon) { s('cap_lon_g', pLon[0]); s('cap_lon_m', pLon[1]); s('cap_lon_s', pLon[2]); }
+  }
   s('f_lat', r.lat); s('f_lon', r.lon); s('f_norte', r.norte); s('f_este', r.este); s('f_cota', r.cota);
+  onCapDMSChange();
+
   s('f_extension', r.extension); s('f_area_cultivo', r.area_cultivo); s('f_area_bosque', r.area_bosque);
   s('f_tipo_suelo', r.tipo_suelo); s('f_pendiente1', r.pendiente1); s('f_pendiente2', r.pendiente2); s('f_vegetacion', r.vegetacion);
   s('f_num_viviendas', r.num_viviendas); s('f_vivienda_desc', r.vivienda_desc);
   s('f_septico_tipo', r.septico_tipo); s('f_septico_otro', r.septico_otro); s('f_septico_desc', r.septico_desc);
   onSepticoTipoChange(); if (r.septico_tipo === 'Otro') s('f_septico_otro', r.septico_otro);
+  s('f_longitud_conduccion', r.longitud_conduccion);
   s('f_captacion', r.captacion); s('f_conduccion', r.conduccion); s('f_recepcion', r.recepcion);
   s('f_serv_obs', r.serv_obs); s('f_deriv_desc', r.deriv_desc); s('f_rest_obs', r.rest_obs);
-  // Bloques dinámicos de coordenadas
   s('f_num_septicos', r.num_septicos);
+
   renderDMSBlocks('viv', parseInt(r.num_viviendas || '0', 10) || 0); fillDMSBlocks('viv', r.viviendas_coords);
   s('f_num_tq_recepcion', r.num_tq_recepcion);
   renderDMSBlocks('tqr', parseInt(r.num_tq_recepcion || '0', 10) || 0); fillDMSBlocks('tqr', r.tq_recepcion);
   s('f_num_tq_sedimentador', r.num_tq_sedimentador);
   renderDMSBlocks('tqs', parseInt(r.num_tq_sedimentador || '0', 10) || 0); fillDMSBlocks('tqs', r.tq_sedimentador);
+
   usosSelected = [...(r.usos || [])];
   document.querySelectorAll('#usosGroup .toggle-btn').forEach(b => b.classList.toggle('active', usosSelected.includes(b.dataset.uso)));
-  servidumbre = r.servidumbre || ''; derivacion = r.derivacion || ''; restitucion = r.restitucion || '';
-  [['servGroup', servidumbre], ['derivGroup', derivacion], ['restGroup', restitucion]].forEach(([gid, val]) => {
+  tieneMotobomba = r.tiene_motobomba || 'No';
+  document.querySelectorAll('#motobombaGroup .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === tieneMotobomba));
+
+  servidumbre = r.servidumbre || ''; obrasTerrenos = r.obras_terrenos || ''; derivacion = r.derivacion || ''; restitucion = r.restitucion || '';
+  [['servGroup', servidumbre], ['obrasGroup', obrasTerrenos], ['derivGroup', derivacion], ['restGroup', restitucion]].forEach(([gid, val]) => {
     document.querySelectorAll('#' + gid + ' .toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.val === val));
   });
+
+  recalcAll();
   showPage('form');
   document.getElementById('deleteCurrentWrap').style.display = 'block';
+}
+
+function startNewVisit() {
+  currentId = null;
+  resetForm(true);
+  showPage('form');
 }
 
 function deleteCurrent() {
@@ -748,21 +1284,28 @@ function deleteCurrent() {
   });
 }
 
-function resetForm() {
+function resetForm(skipConfirm) {
   const doReset = () => {
+    clearTimeout(_autosaveTimer);
     currentId = null;
     document.querySelectorAll('#page-form input, #page-form select, #page-form textarea').forEach(el => el.value = '');
-    usosSelected = []; servidumbre = ''; derivacion = ''; restitucion = '';
+    document.getElementById('f_diametro_cap').value = '¾″';
+    usosSelected = []; servidumbre = ''; obrasTerrenos = ''; derivacion = ''; restitucion = ''; tieneMotobomba = 'No';
     document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('#motobombaGroup .toggle-btn[data-val="No"]')?.classList.add('active');
     ['tqrBlocks', 'tqsBlocks', 'vivBlocks'].forEach(id => document.getElementById(id).innerHTML = '');
     document.getElementById('septicoOtroWrap').style.display = 'none';
+    document.getElementById('needsSummary').style.display = 'none';
+    document.getElementById('aforoSummary').style.display = 'none';
     document.getElementById('gpsStatus').textContent = 'Toca para obtener ubicación';
     document.getElementById('gpsStatus').className = 'gps-status';
     document.getElementById('f_fecha').value = new Date().toISOString().split('T')[0];
     document.getElementById('deleteCurrentWrap').style.display = 'none';
+    document.getElementById('autosaveBadge').textContent = '';
+    resetStopwatch();
   };
-  if (currentId) {
-    customConfirm('¿Crear formulario nuevo?\n\nLos cambios no guardados se perderán.', 'Continuar', doReset);
+  if (currentId && !skipConfirm) {
+    customConfirm('¿Limpiar y crear un formulario nuevo?', 'Continuar', doReset);
   } else {
     doReset();
   }
@@ -770,42 +1313,70 @@ function resetForm() {
 
 function renderRecords() {
   const list = document.getElementById('recordsList');
-  const recs = getRecords().sort((a, b) => (b.updatedAt || '') > (a.updatedAt || '') ? 1 : -1);
+  const stats = document.getElementById('recordsStats');
+  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+  const allRecs = getRecords().sort((a, b) => (b.updatedAt || '') > (a.updatedAt || '') ? 1 : -1);
+  const completas = allRecs.filter(r => r.status === 'completo').length;
+  const borradores = allRecs.length - completas;
+  if (stats) {
+    stats.innerHTML = allRecs.length
+      ? `<span>Total: ${allRecs.length} visitas</span><span>${completas} completas · ${borradores} borradores</span>`
+      : '';
+  }
+  const recs = q
+    ? allRecs.filter(r =>
+        (r.ref || '').toLowerCase().includes(q) ||
+        (r.sinca || '').toLowerCase().includes(q) ||
+        (r.expediente || '').toLowerCase().includes(q) ||
+        (r.usos || []).join(' ').toLowerCase().includes(q)
+      )
+    : allRecs;
+
   if (!recs.length) {
-    list.innerHTML = `<div class="records-empty"><div class="icon">🌿</div><p>Sin visitas registradas.</p><p style="margin-top:8px;font-size:10px">Toca "Nueva visita" para empezar.</p></div>`;
+    list.innerHTML = `<div class="records-empty"><div class="icon">🌿</div><p>${q ? 'Sin coincidencias para tu búsqueda.' : 'Sin visitas registradas.'}</p><p style="margin-top:8px;font-size:10px">Toca "+ Nueva visita de campo" para empezar.</p></div>`;
     return;
   }
   list.innerHTML = recs.map(r => `
-    <div class="record-card">
-      <div onclick="loadRecord('${r.id}')">
+    <div class="record-card" data-id="${escapeHtml(r.id)}">
+      <div onclick="loadRecord('${escapeHtml(r.id)}')">
         <div class="record-card-header">
-          <div class="record-name">${r.ref || 'Sin referencia'}</div>
-          <div class="record-date">${r.fecha || '—'}</div>
+          <div class="record-name">${escapeHtml(r.ref || 'Sin referencia')}</div>
+          <div class="record-date">${escapeHtml(r.fecha || '—')}</div>
         </div>
         <div class="record-meta">
-          SINCA: ${r.sinca || '—'} · Aforo: ${r.caudal || '—'} l/s · Cultivo: ${r.area_cultivo || '—'} ha · Bosque: ${r.area_bosque || '—'} ha<br>
-          Usos: ${(r.usos || []).join(', ') || '—'}
+          SINCA: <strong>${escapeHtml(r.sinca || '—')}</strong> · Aforo: <strong>${escapeHtml(r.caudal || '—')} l/s</strong> · Cultivo: ${escapeHtml(r.area_cultivo || '0')} ha · Bosque: ${escapeHtml(r.area_bosque || '0')} ha<br>
+          Usos: ${escapeHtml((r.usos || []).join(', ') || '—')}
         </div>
       </div>
       <div class="record-footer">
-        <span class="record-status status-${r.status}">${r.status === 'completo' ? 'COMPLETO' : 'BORRADOR'}</span>
-        <button class="record-del" onclick="deleteRecord(event, '${r.id}', '${(r.ref || 'este registro').replace(/'/g, "\\'")}')">🗑 Borrar</button>
+        <span class="record-status status-${r.status === 'completo' ? 'completo' : 'borrador'}">${r.status === 'completo' ? 'COMPLETO' : 'BORRADOR'}</span>
+        <div style="display:flex; gap:6px">
+          <button class="btn-xs" onclick="quickExportRecord(event, '${escapeHtml(r.id)}')">📋 Exportar</button>
+          <button class="record-del" onclick="deleteRecord(event, '${escapeHtml(r.id)}')">🗑 Borrar</button>
+        </div>
       </div>
     </div>`).join('');
 }
 
-function deleteRecord(ev, id, ref) {
+function quickExportRecord(ev, id) {
   ev.stopPropagation();
+  showPage('exportar');
+  const sel = document.getElementById('exportSelect');
+  if (sel) { sel.value = id; previewExport(); }
+}
+
+function deleteRecord(ev, id) {
+  ev.stopPropagation();
+  const r = getRecords().find(x => x.id === id);
+  const ref = r ? (r.ref || 'este registro') : 'este registro';
   customConfirm('¿Borrar "' + ref + '"?\n\nEsta acción no se puede deshacer.', 'Borrar', () => {
-    saveRecords(getRecords().filter(r => r.id !== id));
+    saveRecords(getRecords().filter(x => x.id !== id));
     if (currentId === id) currentId = null;
     renderRecords();
     showNotif('🗑 Registro borrado');
   });
 }
 
-// Cuadro de confirmación propio (los confirm() nativos no funcionan en
-// algunos navegadores embebidos de iOS como Documents by Readdle)
 let _confirmCallback = null;
 function customConfirm(message, okLabel, onConfirm) {
   _confirmCallback = onConfirm;
@@ -816,8 +1387,17 @@ function customConfirm(message, okLabel, onConfirm) {
 
 function renderExportPicker() {
   const sel = document.getElementById('exportSelect');
+  const prevVal = sel.value || currentId || '';
+  const recs = getRecords().sort((a, b) => (b.updatedAt || '') > (a.updatedAt || '') ? 1 : -1);
   sel.innerHTML = '<option value="">-- Seleccionar --</option>' +
-    getRecords().map(r => `<option value="${r.id}">${r.ref || '?'} · ${r.fecha || '?'} (${r.status})</option>`).join('');
+    recs.map(r => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.ref || '?')} · SINCA ${escapeHtml(r.sinca || '—')} · ${escapeHtml(r.fecha || '?')} (${r.status})</option>`).join('');
+  if (prevVal && recs.some(r => r.id === prevVal)) {
+    sel.value = prevVal;
+    previewExport();
+  } else if (recs.length === 1) {
+    sel.value = recs[0].id;
+    previewExport();
+  }
 }
 
 function previewExport() {
@@ -831,10 +1411,18 @@ function previewExport() {
 function fmtCoord(c) {
   if (!c) return '—';
   const has = v => v !== undefined && v !== '';
-  const lat = (has(c.lat_g) || has(c.lat_m) || has(c.lat_s)) ? `${c.lat_g || 0}° ${c.lat_m || 0}' ${c.lat_s || 0}" N` : '—';
-  const lon = (has(c.lon_g) || has(c.lon_m) || has(c.lon_s)) ? `${c.lon_g || 0}° ${c.lon_m || 0}' ${c.lon_s || 0}" W` : '—';
-  return `Lat ${lat}  /  Lon ${lon}`;
+  const lat = (has(c.lat_g) || has(c.lat_m) || has(c.lat_s)) ? `${c.lat_g || 0}° ${c.lat_m || 0}' ${parseFloat(c.lat_s || 0).toFixed(2)}" N` : '—';
+  const lon = (has(c.lon_g) || has(c.lon_m) || has(c.lon_s)) ? `${c.lon_g || 0}° ${c.lon_m || 0}' ${parseFloat(c.lon_s || 0).toFixed(2)}" W` : '—';
+  const latDec = dmsToDecimal(c.lat_g, c.lat_m, c.lat_s, 'N');
+  const lonDec = dmsToDecimal(c.lon_g, c.lon_m, c.lon_s, 'W');
+  const gk = (latDec !== null && lonDec !== null) ? gaussKrugerBogota(latDec, lonDec) : null;
+  const planas = gk ? `  |  Planas: N: ${fmtMeters(gk.north)} – E: ${fmtMeters(gk.east)}` : '';
+  const cota = has(c.cota) ? `  |  Cota: ${c.cota} m.s.n.m.` : '';
+  const cap = has(c.cap_l) ? `  |  Capacidad: ${c.cap_l} litros` : '';
+  const mat = has(c.mat) ? ` (${c.mat})` : '';
+  return `Lat ${lat}  /  Lon ${lon}${planas}${cota}${cap}${mat}`;
 }
+
 function listCoords(arr, base) {
   return (arr && arr.length) ? arr.map((c, i) => `  ${base} ${i + 1}: ${fmtCoord(c)}`).join('\n') : '  —';
 }
@@ -842,16 +1430,31 @@ function listCoords(arr, base) {
 function generateReport(r) {
   const usos = (r.usos || []).join(', ').toUpperCase() || '—';
   const septicoTipo = (r.septico_tipo === 'Otro' && r.septico_otro) ? `Otro — ${r.septico_otro}` : (r.septico_tipo || '—');
+  const tiemposArr = [r.t1, r.t2, r.t3].filter(x => x !== undefined && x !== '');
+  const tiemposStr = tiemposArr.length ? `${tiemposArr.join(' s, ')} s` : '—';
+  const cantResumen = [
+    r.cant_perm ? `Permanentes: ${r.cant_perm}` : '',
+    r.cant_trans ? `Transitorios: ${r.cant_trans}` : '',
+    r.cant_vacunos ? `Vacunos/Equinos: ${r.cant_vacunos}` : '',
+    r.cant_porcinos ? `Porcinos: ${r.cant_porcinos}` : '',
+    r.cant_aves ? `Aves: ${r.cant_aves}` : '',
+    r.cant_riego_m2 ? `Riego: ${r.cant_riego_m2} m²` : '',
+  ].filter(Boolean).join(' · ');
+
   return `DATOS DE LA VISITA DE CAMPO
 ===========================
 Referencia: ${r.ref || '—'}
-Número SINCA: ${r.sinca || '—'}
+Número SINCA: ${r.sinca || '—'}${r.expediente ? `  (Expediente: ${r.expediente})` : ''}
 Fecha de visita: ${r.fecha || '—'}
 Teléfono de contacto: ${r.telefono || '—'}
+Atendió la visita: ${r.atendio_nombre || '—'}${r.atendio_cedula ? ` (C.C. ${r.atendio_cedula})` : ''}
+Ruta de acceso: ${r.acceso || '—'}
 
 USOS SOLICITADOS
 ================
 ${usos}
+Cantidades verificadas: ${cantResumen || '—'}
+Cambio de usos respecto al Auto: ${r.cambio_usos || 'Sin cambio'}
 Cantidad y detalle: ${r.usos_detalle || '—'}
 
 COSTO DEL PROYECTO
@@ -861,7 +1464,9 @@ $${r.costo || '—'}
 CAUDAL AFORADO FUENTE
 ======================
 ${r.caudal || '—'} l/s${r.fuente ? `  (${r.fuente})` : ''}
-Capacidad del balde: ${r.balde_cap || '—'} litros
+Capacidad del balde: ${r.balde_cap || '—'} litros${(r.balde_diam && r.balde_h) ? ` (Diám: ${r.balde_diam} cm · Altura llenado: ${r.balde_h} cm)` : ''}
+Tiempos de aforo: ${tiemposStr}
+Diámetro captación: ${r.diametro_cap || '¾″'}  |  Motobomba: ${r.tiene_motobomba || 'No'}
 Medidas del balde: ${r.balde_medidas || '—'}
 
 COORDENADAS PUNTO DE CAPTACIÓN
@@ -872,8 +1477,8 @@ Planas:       N ${r.norte || '—'}  /  E ${r.este || '—'}  /  Cota ${r.cota |
 ÁREAS DEL PREDIO
 ================
 Extensión total del terreno: ${r.extension || '—'} ha
-Área en cultivo: ${r.area_cultivo || '—'} ha
-Área en bosque:  ${r.area_bosque || '—'} ha
+Área en cultivo: ${r.area_cultivo || '0'} ha
+Área en bosque:  ${r.area_bosque || '0'} ha
 
 SUELO, PENDIENTE Y VEGETACIÓN
 ==============================
@@ -896,6 +1501,7 @@ ${r.septico_desc || '—'}
 
 SISTEMA DE CAPTACIÓN Y CONDUCCIÓN
 ===================================
+Longitud de conducción: ${r.longitud_conduccion ? r.longitud_conduccion + ' metros' : '—'}
 Captación:
 ${r.captacion || '—'}
 
@@ -914,7 +1520,7 @@ ${listCoords(r.tq_sedimentador, 'Tanque sedimentador')}
 
 SERVIDUMBRE
 ===========
-${r.servidumbre || '—'}
+${r.servidumbre || '—'}${r.obras_terrenos ? `  |  ${r.obras_terrenos}` : ''}
 ${r.serv_obs || ''}
 
 DERIVACIONES PARA OTROS USOS QUE PUEDAN RESULTAR AFECTADOS
@@ -931,7 +1537,158 @@ ${r.rest_obs || ''}`;
 function copyExport() {
   const txt = document.getElementById('exportPreview').textContent;
   if (!txt || txt.includes('Selecciona un')) { showNotif('⚠ Selecciona un registro'); return; }
-  navigator.clipboard.writeText(txt).then(() => showNotif('✓ Texto copiado')).catch(() => showNotif('⚠ Copia manualmente'));
+  navigator.clipboard.writeText(txt).then(() => showNotif('✓ Texto copiado al portapapeles')).catch(() => showNotif('⚠ Copia manualmente'));
+}
+
+async function shareOrDownloadTxt() {
+  const id = document.getElementById('exportSelect').value;
+  if (!id) { showNotif('⚠ Selecciona un registro'); return; }
+  const r = getRecords().find(x => x.id === id);
+  if (!r) return;
+  const txt = generateReport(r);
+  const fileName = `SINCA ${r.sinca || r.ref || 'visita'}.txt`;
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const file = new File([blob], fileName, { type: 'text/plain' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ title: fileName, text: txt, files: [file] });
+      showNotif('✓ Compartido');
+      return;
+    } catch {}
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showNotif('✓ Archivo .TXT descargado');
+}
+
+// Genera el archivo caso_[SINCA].json directamente estructurado para src/generate_report.py
+function exportSingleCaseJSON() {
+  const id = document.getElementById('exportSelect').value;
+  if (!id) { showNotif('⚠ Selecciona un registro'); return; }
+  const r = getRecords().find(x => x.id === id);
+  if (!r) return;
+
+  const toDMSArr = (g, m, s, fallbackStr) => {
+    if (g !== undefined && g !== '') return [parseInt(g, 10) || 0, parseInt(m || '0', 10) || 0, parseFloat(s || '0') || 0];
+    return parseDMSString(fallbackStr) || [7, 0, 0.0];
+  };
+
+  const coordsObj = {
+    captacion: {
+      lat: toDMSArr(r.cap_lat_g, r.cap_lat_m, r.cap_lat_s, r.lat),
+      lon: toDMSArr(r.cap_lon_g, r.cap_lon_m, r.cap_lon_s, r.lon),
+      cota: r.cota ? `${Number(r.cota).toLocaleString('es-CO')} m.s.n.m.` : 'AUTO_DEM',
+    }
+  };
+
+  (r.viviendas_coords || []).forEach((v, idx) => {
+    const key = idx === 0 ? 'vivienda' : `vivienda_${idx + 1}`;
+    coordsObj[key] = {
+      lat: toDMSArr(v.lat_g, v.lat_m, v.lat_s),
+      lon: toDMSArr(v.lon_g, v.lon_m, v.lon_s),
+      cota: v.cota ? `${Number(v.cota).toLocaleString('es-CO')} m.s.n.m.` : 'AUTO_DEM',
+    };
+  });
+
+  const receptionKeys = [];
+  (r.tq_recepcion || []).forEach((t, idx) => {
+    const key = `tanque_${idx + 1}`;
+    receptionKeys.push(key);
+    coordsObj[key] = {
+      lat: toDMSArr(t.lat_g, t.lat_m, t.lat_s),
+      lon: toDMSArr(t.lon_g, t.lon_m, t.lon_s),
+      cota: t.cota ? `${Number(t.cota).toLocaleString('es-CO')} m.s.n.m.` : 'AUTO_DEM',
+      capacidad_litros: t.cap_l ? Number(t.cap_l) : undefined,
+      material: t.mat || undefined,
+    };
+  });
+
+  (r.tq_sedimentador || []).forEach((t, idx) => {
+    const key = idx === 0 ? 'tanque_sedimentador' : `tanque_sedimentador_${idx + 1}`;
+    coordsObj[key] = {
+      lat: toDMSArr(t.lat_g, t.lat_m, t.lat_s),
+      lon: toDMSArr(t.lon_g, t.lon_m, t.lon_s),
+      cota: t.cota ? `${Number(t.cota).toLocaleString('es-CO')} m.s.n.m.` : 'AUTO_DEM',
+      capacidad_litros: t.cap_l ? Number(t.cap_l) : undefined,
+      material: t.mat || undefined,
+    };
+  });
+
+  const tieneConsumoHumano = (r.usos || []).includes('Doméstico con consumo humano') || !(r.usos || []).includes('Doméstico sin consumo humano');
+  const dotPerm = tieneConsumoHumano ? 150 : 50;
+  const lblDom = tieneConsumoHumano ? 'Doméstico (con consumo humano' : 'Doméstico (sin consumo humano';
+  const consumptionInputs = [];
+  if (parseInt(r.cant_perm || '0', 10) > 0) {
+    consumptionInputs.push({ uso: `${lblDom} - permanentes)`, dotacion_label: `${dotPerm} L/d*hab`, dotacion_val: dotPerm, cantidad: parseInt(r.cant_perm, 10) });
+  }
+  if (parseInt(r.cant_trans || '0', 10) > 0) {
+    consumptionInputs.push({ uso: `${lblDom} - transitorios)`, dotacion_label: '50 L/d*hab', dotacion_val: 50, cantidad: parseInt(r.cant_trans, 10) });
+  }
+  if (parseInt(r.cant_vacunos || '0', 10) > 0) {
+    consumptionInputs.push({ uso: 'Abrevadero (vacunos)', dotacion_label: '40 L/d*animal', dotacion_val: 40, cantidad: parseInt(r.cant_vacunos, 10) });
+  }
+  if (parseInt(r.cant_porcinos || '0', 10) > 0) {
+    consumptionInputs.push({ uso: 'Pecuario (porcinos)', dotacion_label: '10 L/d*animal', dotacion_val: 10, cantidad: parseInt(r.cant_porcinos, 10) });
+  }
+  if (parseInt(r.cant_aves || '0', 10) > 0) {
+    consumptionInputs.push({ uso: 'Pecuario (aves)', dotacion_label: '0,25 L/d*ave', dotacion_val: 0.25, cantidad: parseInt(r.cant_aves, 10) });
+  }
+  if (parseInt(r.cant_riego_m2 || '0', 10) > 0) {
+    consumptionInputs.push({ uso: 'Riego', dotacion_label: '0,5 L/d*m2', dotacion_val: 0.5, cantidad: parseInt(r.cant_riego_m2, 10) });
+  }
+
+  const tiemposNum = [r.t1, r.t2, r.t3].map(x => parseFloat(x)).filter(x => !isNaN(x) && x > 0);
+  const aforoCalculo = tiemposNum.length ? {
+    volumen_l: r.balde_cap ? parseFloat(r.balde_cap) : undefined,
+    diametro_cm: r.balde_diam ? parseFloat(r.balde_diam) : undefined,
+    altura_llenado_cm: r.balde_h ? parseFloat(r.balde_h) : undefined,
+    tiempos_s: tiemposNum,
+  } : undefined;
+
+  const caseJson = {
+    _origen_campo_ambiental: r,
+    predio: {
+      nombre: r.ref || '',
+      diametro_autorizar: r.diametro_cap || '¾″',
+      area_cultivos_ha: parseFloat(r.area_cultivo || '0') || 0,
+      area_bosque_ha: parseFloat(r.area_bosque || '0') || 0,
+      viviendas_cantidad: parseInt(r.num_viviendas || '1', 10) || 1,
+    },
+    hidrologia: {
+      tiene_motobomba: r.tiene_motobomba === 'Sí',
+      aforo_ls: r.caudal ? parseFloat(r.caudal) : 0,
+      aforo_calculo: aforoCalculo,
+      factor_medio_minimo: 0.7,
+    },
+    cover: {
+      "5": r.telefono || '',
+      "8": "AUTO_CAT",
+      "10": r.ref || '',
+      "11": r.extension ? `${String(r.extension).replace('.', ',')} ha` : '',
+      "13": r.costo ? `$${r.costo.replace(/^\$/, '')}` : '',
+      "14": r.caudal ? `${String(r.caudal).replace('.', ',')} L/s` : '',
+      "18": (r.usos || []).join(' y '),
+      "19": r.fecha || '',
+      "20": "Héctor Hacid Julio Meza",
+      "21": r.sinca || '',
+      "22": r.expediente || '',
+    },
+    coords: coordsObj,
+    reception_points: receptionKeys,
+    consumption_inputs: consumptionInputs,
+  };
+
+  const blob = new Blob([JSON.stringify(caseJson, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `caso_${r.sinca || 'nuevo'}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showNotif('✓ caso_SINCA.json descargado');
 }
 
 function exportJSON() {
@@ -941,7 +1698,7 @@ function exportJSON() {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = `campo_ambiental_${new Date().toISOString().split('T')[0]}.json`;
   a.click(); URL.revokeObjectURL(a.href);
-  showNotif('✓ JSON descargado');
+  showNotif('✓ Respaldo JSON descargado');
 }
 
 function importJSONFile(file) {
@@ -967,6 +1724,7 @@ function applyImport(text) {
     else if ((imp.updatedAt || '') > (recs[i].updatedAt || '')) { recs[i] = imp; actualizados++; }
   });
   saveRecords(recs);
+  renderRecords();
   renderExportPicker();
   showNotif(`✓ Importado: ${nuevos} nuevos · ${actualizados} actualizados`);
 }
@@ -977,9 +1735,10 @@ function showNotif(msg) {
   clearTimeout(_nt); _nt = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
+// Auto-guardado al editar cualquier campo del formulario
+document.getElementById('page-form').addEventListener('input', scheduleAutosave);
 document.getElementById('f_fecha').value = new Date().toISOString().split('T')[0];
 
-// Botones del cuadro de confirmación
 document.getElementById('modalOk').addEventListener('click', () => {
   document.getElementById('modalOverlay').classList.remove('show');
   if (_confirmCallback) { const cb = _confirmCallback; _confirmCallback = null; cb(); }
@@ -997,7 +1756,6 @@ document.getElementById('modalOverlay').addEventListener('click', (e) => {
 
 renderRecords();
 
-// Registro del service worker: permite instalar la app y abrirla sin internet
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {});

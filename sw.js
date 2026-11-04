@@ -1,7 +1,7 @@
 // Service worker · Campo Ambiental
 // Cuando publiques una nueva versión de la app, sube el número de CACHE_NAME
 // (p. ej. 'campo-ambiental-v2') para que los teléfonos renueven la caché.
-const CACHE_NAME = 'campo-ambiental-v1';
+const CACHE_NAME = 'campo-ambiental-v2';
 const CORE = [
   './',
   './index.html',
